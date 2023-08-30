@@ -291,16 +291,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 179162654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
 --- !u!114 &179162656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5382,7 +5401,6 @@ GameObject:
   - component: {fileID: 1102664025}
   - component: {fileID: 1102664026}
   - component: {fileID: 1102664027}
-  - component: {fileID: 1102664028}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -5605,87 +5623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106be6115ebdf3b43803d48fb45d5c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 1102664028}
-  startAction:
-    m_Name: Start
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 630cca97-e34b-4430-b71a-41ecc8590926
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: f37de677-21fe-4694-a93b-71e3bd888a69
-      m_Path: <Gamepad>/start
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 8675162c-36e8-42fe-ab10-a0c0617431bb
-      m_Path: <DualShockGamepad>/start
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 0
-    - m_Name: 
-      m_Id: ede4764f-41eb-463e-a1d7-921356f2e112
-      m_Path: <HID::Sony Interactive Entertainment DualSense Wireless Controller>/button2
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 03ac9d28-1fdf-4f61-8f97-7d93a872704a
-      m_Path: <HID::Arduino LLC Arduino Leonardo>/button2
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 0
-  rotateCCW:
-    m_Name: Rotate CCW
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 3d73090c-db8f-4320-a629-cf7d0d18a2d5
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  rotateCW:
-    m_Name: Rotate CW
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: dfdfe1a4-b6d2-4cf5-84c8-fa9932b4b01d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  moveLeft:
-    m_Name: Move Left
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2e1ea0e0-9873-402b-8f6d-0b0883918378
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  moveRight:
-    m_Name: Move Right
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 387e7d3e-192f-4260-896c-5696629b541a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-  softDrop:
-    m_Name: Soft Drop
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b9f886c7-ea37-445e-9cb9-01c764754b4d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
   lockDelay: 0.001
   time: 0
   fallTime: 0.8
@@ -5714,117 +5651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13109b4e4ce4dcf419ff89a4179c347e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1102664028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1102664022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 8369acfa2cd5e0a4a9df5a63c6c4dada,
-    type: 3}
-  m_NotificationBehavior: 1
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1102664022}
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a979fd7d-cc34-49e9-baf0-c278e4534846
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow,/Arduino
-      LLC Arduino Leonardo/stick,/Arduino LLC Arduino Leonardo1/stick]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d97a2037-f68a-4acf-b38d-e2532e654e8c
-    m_ActionName: Player/RotateCCW
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fedf8f66-bfd3-4e0f-985d-0b453f3693b0
-    m_ActionName: Player/RotateCW
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 86d0ba3d-7b53-4875-aa05-68bd20b7f013
-    m_ActionName: Player/Start
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4ef3a203-bc2b-482a-8672-6c92b763804c
-    m_ActionName: Player/MoveLeft
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f9785bda-0c9c-41a1-8eda-2611ae039fc2
-    m_ActionName: Player/MoveRight
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: dda1fe43-2831-4e76-a06b-3a69fc725cd7
-    m_ActionName: UI/Navigate[/Arduino LLC Arduino Leonardo/stick/up,/Arduino LLC
-      Arduino Leonardo1/stick/up,/Arduino LLC Arduino Leonardo/stick/down,/Arduino
-      LLC Arduino Leonardo1/stick/down,/Arduino LLC Arduino Leonardo/stick/left,/Arduino
-      LLC Arduino Leonardo1/stick/left,/Arduino LLC Arduino Leonardo/stick/right,/Arduino
-      LLC Arduino Leonardo1/stick/right,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9228d0e3-6802-4264-82d2-681f76b8d14b
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2a46915c-7518-49df-bb84-36b20150d0d4
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8f74bd6a-5e08-42ef-8869-0a6774b59270
-    m_ActionName: UI/Point[/Mouse/position,/Pen/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2ae8406c-c1a2-40e2-89d5-f4f99cf62705
-    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 64f58d25-41c7-4b68-affc-eb99004c227e
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3099a0db-e7f8-4877-8c00-b8774c2ef1f8
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6b4e4350-368b-4ca7-a383-5902d571b9b8
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b9c1c8f5-3129-441e-beb6-13786fe22bb8
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4624de8b-2667-4374-92aa-31611fc2983f
-    m_ActionName: UI/TrackedDeviceOrientation
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &1511336043
 GameObject:
   m_ObjectHideFlags: 0

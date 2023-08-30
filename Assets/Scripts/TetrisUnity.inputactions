@@ -252,6 +252,28 @@
                 },
                 {
                     "name": "",
+                    "id": "6fdfe85f-5b45-4fc0-8b32-8d07a455e9e1",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "RotateCW",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5cd8a8a-594d-45d6-b59d-6b887db9c506",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RotateCW",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d3ce3801-4007-4345-8184-ec0d01a3b717",
                     "path": "<Gamepad>/start",
                     "interactions": "",
@@ -285,8 +307,63 @@
                 },
                 {
                     "name": "",
+                    "id": "07fa7dc6-0b52-4cee-b550-b0e5280cab8b",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/button8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32ee1ed1-5ab8-41a7-9245-6d880884e30f",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88ae4878-ae24-4d34-8969-cac61c19ea17",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f672daaa-940e-4a38-8487-b287e0f9b2a8",
                     "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RotateCCW",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c693e48-20f7-49fe-b7d3-f1fe27fc5ec3",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "RotateCCW",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d5c34c4-31bb-45da-bd55-98f960ef71a0",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/button3",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -329,6 +406,17 @@
                 },
                 {
                     "name": "",
+                    "id": "50f54b79-c1f3-4841-9b13-15b668c8baed",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/stick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "60508943-c3f8-48a3-b32b-be510091b9af",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
@@ -356,6 +444,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "MoveRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f93e625d-e312-4835-9783-e51239889854",
+                    "path": "<HID::Arduino LLC Arduino Leonardo>/stick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "MoveRight",
                     "isComposite": false,
                     "isPartOfComposite": false
