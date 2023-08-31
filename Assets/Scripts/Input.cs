@@ -19,14 +19,6 @@ public class @Input : IInputActionCollection, IDisposable
             ""id"": ""85a341b5-613a-4159-8119-fa7bf6e5f7cd"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""a979fd7d-cc34-49e9-baf0-c278e4534846"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""RotateCCW"",
                     ""type"": ""Button"",
                     ""id"": ""d97a2037-f68a-4acf-b38d-e2532e654e8c"",
@@ -73,141 +65,17 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""89633988-af90-4b48-a68e-320ee56ab393"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""978bfe49-cc26-4a3d-ab7b-7d7a29327403"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
-                    ""path"": ""Dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""d2581a9b-1d11-4566-b27d-b92aff5fabbc"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""2e46982e-44cc-431b-9f0b-c11910bf467a"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""fcfe95b8-67b9-4526-84b5-5d0bc98d6400"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""77bff152-3580-4b21-b6de-dcd0c7e41164"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8"",
-                    ""path"": ""<XRController>/{Primary2DAxis}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
-                    ""path"": ""<Joystick>/stick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""9c693e48-20f7-49fe-b7d3-f1fe27fc5ec3"",
@@ -287,17 +155,6 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e5cd8a8a-594d-45d6-b59d-6b887db9c506"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/button2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""RotateCW"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""88ae4878-ae24-4d34-8969-cac61c19ea17"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
@@ -353,30 +210,8 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""07fa7dc6-0b52-4cee-b550-b0e5280cab8b"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/button8"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Start"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f672daaa-940e-4a38-8487-b287e0f9b2a8"",
                     ""path"": ""<XInputController>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""RotateCCW"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8d5c34c4-31bb-45da-bd55-98f960ef71a0"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/button3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -419,17 +254,6 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""50f54b79-c1f3-4841-9b13-15b668c8baed"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/stick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""76d1cdec-491e-4f56-be87-9cd4675fe561"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
@@ -463,17 +287,6 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f93e625d-e312-4835-9783-e51239889854"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/stick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4141c232-6f5d-494b-b9d1-966c26e55541"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
@@ -496,6 +309,17 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2ac940b3-3cd0-4806-9c09-097e0706bf08"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SoftDrop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8a4f8e73-2e76-41e1-8480-afc1785afdee"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
@@ -507,12 +331,45 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2b7a34a6-dfac-44f8-8b29-7a2661c2e478"",
-                    ""path"": ""<HID::Arduino LLC Arduino Leonardo>/stick/down"",
+                    ""id"": ""6fc37be3-1a50-4cbb-b013-070313707c7c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f00bff89-243b-4b1d-8ca6-8dae374bf454"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""SoftDrop"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cda17bc-a739-4e0d-921b-34c38c125a43"",
+                    ""path"": ""<DualShockGamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6a19a36-ae48-4bd8-beda-4283fd932d61"",
+                    ""path"": ""<XInputController>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1090,13 +947,13 @@ public class @Input : IInputActionCollection, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_RotateCCW = m_Player.FindAction("RotateCCW", throwIfNotFound: true);
         m_Player_RotateCW = m_Player.FindAction("RotateCW", throwIfNotFound: true);
         m_Player_Start = m_Player.FindAction("Start", throwIfNotFound: true);
         m_Player_MoveLeft = m_Player.FindAction("MoveLeft", throwIfNotFound: true);
         m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
         m_Player_SoftDrop = m_Player.FindAction("SoftDrop", throwIfNotFound: true);
+        m_Player_Reset = m_Player.FindAction("Reset", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1158,24 +1015,24 @@ public class @Input : IInputActionCollection, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_RotateCCW;
     private readonly InputAction m_Player_RotateCW;
     private readonly InputAction m_Player_Start;
     private readonly InputAction m_Player_MoveLeft;
     private readonly InputAction m_Player_MoveRight;
     private readonly InputAction m_Player_SoftDrop;
+    private readonly InputAction m_Player_Reset;
     public struct PlayerActions
     {
         private @Input m_Wrapper;
         public PlayerActions(@Input wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @RotateCCW => m_Wrapper.m_Player_RotateCCW;
         public InputAction @RotateCW => m_Wrapper.m_Player_RotateCW;
         public InputAction @Start => m_Wrapper.m_Player_Start;
         public InputAction @MoveLeft => m_Wrapper.m_Player_MoveLeft;
         public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
         public InputAction @SoftDrop => m_Wrapper.m_Player_SoftDrop;
+        public InputAction @Reset => m_Wrapper.m_Player_Reset;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1185,9 +1042,6 @@ public class @Input : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @RotateCCW.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCCW;
                 @RotateCCW.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCCW;
                 @RotateCCW.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCCW;
@@ -1206,13 +1060,13 @@ public class @Input : IInputActionCollection, IDisposable
                 @SoftDrop.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSoftDrop;
                 @SoftDrop.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSoftDrop;
                 @SoftDrop.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSoftDrop;
+                @Reset.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReset;
+                @Reset.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReset;
+                @Reset.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReset;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
                 @RotateCCW.started += instance.OnRotateCCW;
                 @RotateCCW.performed += instance.OnRotateCCW;
                 @RotateCCW.canceled += instance.OnRotateCCW;
@@ -1231,6 +1085,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @SoftDrop.started += instance.OnSoftDrop;
                 @SoftDrop.performed += instance.OnSoftDrop;
                 @SoftDrop.canceled += instance.OnSoftDrop;
+                @Reset.started += instance.OnReset;
+                @Reset.performed += instance.OnReset;
+                @Reset.canceled += instance.OnReset;
             }
         }
     }
@@ -1387,13 +1244,13 @@ public class @Input : IInputActionCollection, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMove(InputAction.CallbackContext context);
         void OnRotateCCW(InputAction.CallbackContext context);
         void OnRotateCW(InputAction.CallbackContext context);
         void OnStart(InputAction.CallbackContext context);
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnMoveRight(InputAction.CallbackContext context);
         void OnSoftDrop(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

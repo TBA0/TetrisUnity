@@ -628,12 +628,12 @@ public class Board : MonoBehaviour
 				break;
 		}
 
-		UnityEngine.Debug.Log("Lines Cleared: " + linesCleared);
-		UnityEngine.Debug.Log("Points Scored: " + pointsScored);
-		UnityEngine.Debug.Log("---------------------------------");
-		UnityEngine.Debug.Log("Lines: " + lines);
-		UnityEngine.Debug.Log("Level: " + level);
-		UnityEngine.Debug.Log("Score: " + score);
+		//UnityEngine.Debug.Log("Lines Cleared: " + linesCleared);
+		//UnityEngine.Debug.Log("Points Scored: " + pointsScored);
+		//UnityEngine.Debug.Log("---------------------------------");
+		//UnityEngine.Debug.Log("Lines: " + lines);
+		//UnityEngine.Debug.Log("Level: " + level);
+		//UnityEngine.Debug.Log("Score: " + score);
 	}
 
 	private bool IsLineFull(int row)
