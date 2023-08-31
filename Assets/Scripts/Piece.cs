@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System.Threading;
 using System.Collections;
 using System.Runtime.Remoting.Contexts;
+using UnityEngine.InputSystem.Controls;
 
 public class Piece : MonoBehaviour
 {
@@ -47,6 +48,14 @@ public class Piece : MonoBehaviour
 
 	public bool resetButtonsNotPressed = true;
 
+	private Input m_PlayerInput;
+	private ButtonControl b_Start;
+	private ButtonControl b_MoveLeft;
+	private ButtonControl b_MoveRight;
+	private ButtonControl b_RotateCCW;
+	private ButtonControl b_RotateCW;
+	private ButtonControl b_SoftDrop;
+
 	private void Awake()
 	{
 
@@ -73,8 +82,18 @@ public class Piece : MonoBehaviour
 		{
 			this.cells[i] = (Vector3Int)data.cells[i];
 		}
-		Input input = new Input();
-		input.Player.Enable();
+
+		m_PlayerInput = new Input();
+		m_PlayerInput.Enable();
+
+		b_Start = (ButtonControl)m_PlayerInput.Player.Start.controls[0];
+		b_MoveLeft = (ButtonControl)m_PlayerInput.Player.MoveLeft.controls[0];
+		b_MoveRight = (ButtonControl) m_PlayerInput.Player.MoveRight.controls[0];
+		b_RotateCCW = (ButtonControl)m_PlayerInput.Player.RotateCCW.controls[0];
+		b_RotateCW = (ButtonControl)m_PlayerInput.Player.RotateCW.controls[0];
+		b_SoftDrop = (ButtonControl)m_PlayerInput.Player.SoftDrop.controls[0];
+		Debug.Log(b_Start);
+
 		//input.Player.Start.performed += StartButton;
 		//input.Player.RotateCCW.performed += RotateCCW;
 		//input.Player.RotateCW.performed += RotateCW;
@@ -252,24 +271,58 @@ public class Piece : MonoBehaviour
 			//HardDrop();
 		}*/
 	}
+
 	private void Update()
 	{
+		if (!Application.isFocused && !paused)
+		{
+			m_PlayerInput.Disable();
+			Pause();
+			return;
+		}
+		else if (Application.isFocused)
+		{
+			m_PlayerInput.Enable();
+		}
+
+		if (m_PlayerInput.Player.Start.activeControl != null)
+		{
+			b_Start = (ButtonControl)m_PlayerInput.Player.Start.activeControl;
+		}
+		if (m_PlayerInput.Player.MoveLeft.activeControl != null)
+		{
+			b_MoveLeft = (ButtonControl)m_PlayerInput.Player.MoveLeft.activeControl;
+		}
+		if (m_PlayerInput.Player.MoveRight.activeControl != null)
+		{
+			b_MoveRight = (ButtonControl)m_PlayerInput.Player.MoveRight.activeControl;
+		}
+		if (m_PlayerInput.Player.RotateCCW.activeControl != null)
+		{
+			b_RotateCCW = (ButtonControl)m_PlayerInput.Player.RotateCCW.activeControl;
+		}
+		if (m_PlayerInput.Player.RotateCW.activeControl != null)
+		{
+			b_RotateCW = (ButtonControl)m_PlayerInput.Player.RotateCW.activeControl;
+		}
+		if (m_PlayerInput.Player.SoftDrop.activeControl != null)
+		{
+			b_SoftDrop  = (ButtonControl)m_PlayerInput.Player.SoftDrop.activeControl;
+		}
+		Debug.Log(b_Start);
+
 		//Pause
 		if (!paused && !board.gameOver)
 		{
-			if (Keyboard.current.enterKey.wasPressedThisFrame)
+			if (b_Start.wasPressedThisFrame)
 			{
-				board.stopwatch.Stop();
-				FindObjectOfType<AudioManager>().Play("Pause");
-				board.pausedText.text = "PAUSED";
-				board.tilemapRenderer.sortingOrder = -1;
-				paused = true;
+				Pause();
 				return;
 			}
 		}
 		if (paused && !board.gameOver)
 		{
-			if (Keyboard.current.enterKey.wasPressedThisFrame)
+			if (b_Start.wasPressedThisFrame)
 			{
 				board.stopwatch.Start();
 				board.pausedText.text = "";
@@ -280,7 +333,7 @@ public class Piece : MonoBehaviour
 		}
 		if (board.gameOver)
 		{
-			if (Keyboard.current.enterKey.wasPressedThisFrame)
+			if (b_Start.wasPressedThisFrame)
 			{
 				paused = false;
 				board.pausedText.text = "";
@@ -413,14 +466,14 @@ public class Piece : MonoBehaviour
 
 		//Move
 		//left
-		if (Keyboard.current.leftArrowKey.wasPressedThisFrame && !readyLeft)
+		if (b_MoveLeft.wasPressedThisFrame && !readyLeft)
 		{
 			Move(Vector2Int.left);
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyLeft = true;
 		}
-		if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
+		if (b_MoveLeft.wasReleasedThisFrame)
 		{
 			readyLeft = false;
 			holdingDas = false;
@@ -442,7 +495,7 @@ public class Piece : MonoBehaviour
 		}
 
 		//right
-		if (Keyboard.current.rightArrowKey.wasPressedThisFrame && !readyRight)
+		if (b_MoveRight.wasPressedThisFrame && !readyRight)
 		{
 			Debug.Log("moved right");
 			Move(Vector2Int.right);
@@ -450,7 +503,7 @@ public class Piece : MonoBehaviour
 			pressTime = downTime + dasDelay;
 			readyRight = true;
 		}
-		if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
+		if (b_MoveRight.wasReleasedThisFrame)
 		{
 			readyRight = false;
 			holdingDas = false;
@@ -472,7 +525,7 @@ public class Piece : MonoBehaviour
 		}
 
 		//Pushdown
-		if (Keyboard.current.downArrowKey.wasPressedThisFrame || Keyboard.current.sKey.wasPressedThisFrame)
+		if (b_SoftDrop.wasPressedThisFrame)
 		{
 			Debug.Log("Pressed pushdown");
 			pushedDown = true;
@@ -486,7 +539,7 @@ public class Piece : MonoBehaviour
 				board.speed = Speed.Lv19to28;
 			}
 		}
-		if (Keyboard.current.downArrowKey.wasReleasedThisFrame || Keyboard.current.sKey.wasReleasedThisFrame)
+		if (b_SoftDrop.wasReleasedThisFrame)
 		{
 			Debug.Log("Released pushdown");
 			board.speed = prevFallDelay;
@@ -494,14 +547,15 @@ public class Piece : MonoBehaviour
 		}
 
 		//Rotations
-		if (Keyboard.current.zKey.wasPressedThisFrame)
+		if (b_RotateCCW.wasPressedThisFrame)
 		{
 			Rotate(-1);
 		}
-		else if (Keyboard.current.xKey.wasPressedThisFrame)
+		else if (b_RotateCW.wasPressedThisFrame)
 		{
 			Rotate(1);
 		}
+
 		//Fall
 		if (Time.time >= this.fallTime)
 		{
@@ -513,7 +567,6 @@ public class Piece : MonoBehaviour
 			{
 				if (spawnedPiece)
 				{
-					Debug.Log("fell");
 					Fall();
 				}
 				if (this.lockTime >= this.lockDelay)
@@ -553,6 +606,15 @@ public class Piece : MonoBehaviour
 				return;
 			}
 		}
+	}
+
+	public void Pause()
+	{
+		board.stopwatch.Stop();
+		FindObjectOfType<AudioManager>().Play("Pause");
+		board.pausedText.text = "PAUSED";
+		board.tilemapRenderer.sortingOrder = -1;
+		paused = true;
 	}
 
 	/*private void HardDrop()
