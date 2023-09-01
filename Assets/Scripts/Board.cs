@@ -29,6 +29,7 @@ public class Board : MonoBehaviour
 	public int highscore = 0;
 	public int lines = 0;
 	public int level = 0;
+	public int prevLevel = 0;
 	public int tetrisLines = 0;
 	public float tetrisRate = 0f;
 	public float speed = 0.8f;
@@ -104,6 +105,11 @@ public class Board : MonoBehaviour
 			highscore = PlayerPrefs.GetInt("HighScore", highscore);
 		}
 		settings.startLevel = 0;
+		if (File.Exists("settings.txt"))
+		{
+			ReadSettingsFile("settings.txt");
+		}
+		prevLevel = settings.startLevel;
 		this.tilemap = GetComponentInChildren<Tilemap>();
 		this.activePiece = GetComponentInChildren<Piece>();
 		this.nextPiece = GetComponentInChildren<NextPiece>();
@@ -517,6 +523,7 @@ public class Board : MonoBehaviour
 		int lastlevel = level;
 		if (int.Parse((lines / 10).ToString(), System.Globalization.NumberStyles.HexNumber) > level && !leveledUpOnce)
 		{
+			prevLevel = level;
 			level += 1;
 			leveledUpOnce = true;
 		}
@@ -526,6 +533,7 @@ public class Board : MonoBehaviour
 			transitionLevel += 1;
 		}
 		int levelColour = level % 10;
+		int prevLevelColour = prevLevel % 10;
 
 		if (level != lastlevel)
 		{
@@ -534,97 +542,154 @@ public class Board : MonoBehaviour
 			RenderSettings.skybox = skyboxes[randomSkybox];
 		}
 
+		TileBase currentTileA = Lv0A;
+		TileBase currentTileB = Lv0B;
+		TileBase currentTileC = Lv0C;
+		switch (prevLevelColour)
+		{
+			case 0:
+				currentTileA = Lv0A;
+				currentTileB = Lv0B;
+				currentTileC = Lv0C;
+				break;
+			case 1:
+				currentTileA = Lv1A;
+				currentTileB = Lv1B;
+				currentTileC = Lv1C;
+				break;
+			case 2:
+				currentTileA = Lv2A;
+				currentTileB = Lv2B;
+				currentTileC = Lv2C;
+				break;
+			case 3:
+				currentTileA = Lv3A;
+				currentTileB = Lv3B;
+				currentTileC = Lv3C;
+				break;
+			case 4:
+				currentTileA = Lv4A;
+				currentTileB = Lv4B;
+				currentTileC = Lv4C;
+				break;
+			case 5:
+				currentTileA = Lv5A;
+				currentTileB = Lv5B;
+				currentTileC = Lv5C;
+				break;
+			case 6:
+				currentTileA = Lv6A;
+				currentTileB = Lv6B;
+				currentTileC = Lv6C;
+				break;
+			case 7:
+				currentTileA = Lv7A;
+				currentTileB = Lv7B;
+				currentTileC = Lv7C;
+				break;
+			case 8:
+				currentTileA = Lv8A;
+				currentTileB = Lv8B;
+				currentTileC = Lv8C;
+				break;
+			case 9:
+				currentTileA = Lv9A;
+				currentTileB = Lv9B;
+				currentTileC = Lv9C;
+				break;
+		}
 		switch (levelColour)
 		{
+			
 			case 0:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv0;
 				}
-				tilemap.SwapTile(Lv9A, Lv0A);
-				tilemap.SwapTile(Lv9B, Lv0B);
-				tilemap.SwapTile(Lv9C, Lv0C);
+				tilemap.SwapTile(currentTileA, Lv0A);
+				tilemap.SwapTile(currentTileB, Lv0B);
+				tilemap.SwapTile(currentTileC, Lv0C);
 				break;
 			case 1:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv1;
 				}
-				tilemap.SwapTile(Lv0A, Lv1A);
-				tilemap.SwapTile(Lv0B, Lv1B);
-				tilemap.SwapTile(Lv0C, Lv1C);
+				tilemap.SwapTile(currentTileA, Lv1A);
+				tilemap.SwapTile(currentTileB, Lv1B);
+				tilemap.SwapTile(currentTileC, Lv1C);
 				break;
 			case 2:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv2;
 				}
-				tilemap.SwapTile(Lv1A, Lv2A);
-				tilemap.SwapTile(Lv1B, Lv2B);
-				tilemap.SwapTile(Lv1C, Lv2C);
+				tilemap.SwapTile(currentTileA, Lv2A);
+				tilemap.SwapTile(currentTileB, Lv2B);
+				tilemap.SwapTile(currentTileC, Lv2C);
 				break;
 			case 3:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv3;
 				}
-				tilemap.SwapTile(Lv2A, Lv3A);
-				tilemap.SwapTile(Lv2B, Lv3B);
-				tilemap.SwapTile(Lv2C, Lv3C);
+				tilemap.SwapTile(currentTileA, Lv3A);
+				tilemap.SwapTile(currentTileB, Lv3B);
+				tilemap.SwapTile(currentTileC, Lv3C);
 				break;
 			case 4:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv4;
 				}
-				tilemap.SwapTile(Lv3A, Lv4A);
-				tilemap.SwapTile(Lv3B, Lv4B);
-				tilemap.SwapTile(Lv3C, Lv4C);
+				tilemap.SwapTile(currentTileA, Lv4A);
+				tilemap.SwapTile(currentTileB, Lv4B);
+				tilemap.SwapTile(currentTileC, Lv4C);
 				break;
 			case 5:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv5;
 				}
-				tilemap.SwapTile(Lv4A, Lv5A);
-				tilemap.SwapTile(Lv4B, Lv5B);
-				tilemap.SwapTile(Lv4C, Lv5C);
+				tilemap.SwapTile(currentTileA, Lv5A);
+				tilemap.SwapTile(currentTileB, Lv5B);
+				tilemap.SwapTile(currentTileC, Lv5C);
 				break;
 			case 6:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv6;
 				}
-				tilemap.SwapTile(Lv5A, Lv6A);
-				tilemap.SwapTile(Lv5B, Lv6B);
-				tilemap.SwapTile(Lv5C, Lv6C);
+				tilemap.SwapTile(currentTileA, Lv6A);
+				tilemap.SwapTile(currentTileB, Lv6B);
+				tilemap.SwapTile(currentTileC, Lv6C);
 				break;
 			case 7:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv7;
 				}
-				tilemap.SwapTile(Lv6A, Lv7A);
-				tilemap.SwapTile(Lv6B, Lv7B);
-				tilemap.SwapTile(Lv6C, Lv7C);
+				tilemap.SwapTile(currentTileA, Lv7A);
+				tilemap.SwapTile(currentTileB, Lv7B);
+				tilemap.SwapTile(currentTileC, Lv7C);
 				break;
 			case 8:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv8;
 				}
-				tilemap.SwapTile(Lv7A, Lv8A);
-				tilemap.SwapTile(Lv7B, Lv8B);
-				tilemap.SwapTile(Lv7C, Lv8C);
+				tilemap.SwapTile(currentTileA, Lv8A);
+				tilemap.SwapTile(currentTileB, Lv8B);
+				tilemap.SwapTile(currentTileC, Lv8C);
 				break;
 			case 9:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv9;
 				}
-				tilemap.SwapTile(Lv8A, Lv9A);
-				tilemap.SwapTile(Lv8B, Lv9B);
-				tilemap.SwapTile(Lv8C, Lv9C);
+				tilemap.SwapTile(currentTileA, Lv9A);
+				tilemap.SwapTile(currentTileB, Lv9B);
+				tilemap.SwapTile(currentTileC, Lv9C);
 				break;
 		}
 

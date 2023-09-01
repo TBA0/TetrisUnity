@@ -130,7 +130,7 @@ public class Piece : MonoBehaviour
 		}
 		if ((m_PlayerInput.Player.SoftDrop.activeControl != null) && ((ButtonControl)m_PlayerInput.Player.SoftDrop.activeControl != b_Start))
 		{
-			b_SoftDrop  = (ButtonControl)m_PlayerInput.Player.SoftDrop.activeControl;
+			b_SoftDrop = (ButtonControl)m_PlayerInput.Player.SoftDrop.activeControl;
 		}
 		if ((m_PlayerInput.Player.Reset.activeControl != null) && ((ButtonControl)m_PlayerInput.Player.Reset.activeControl != b_Start))
 		{
@@ -175,7 +175,7 @@ public class Piece : MonoBehaviour
 			return;
 		}
 
-		
+
 		//Tetris rate text colour
 		if (board.tetrisRate < 25)
 		{
@@ -407,7 +407,17 @@ public class Piece : MonoBehaviour
 			}
 		}
 		bool valid = CheckValidSpace(Vector2Int.down);
-		if (valid) this.board.Set(this);
+		if (Time.time >= this.fallTime)
+		{
+			if (valid)
+			{
+				this.board.Set(this);
+			}
+		}
+		else if (spawnedPiece)
+		{
+			this.board.Set(this);
+		}
 	}
 
 	private void Fall()
@@ -500,7 +510,7 @@ public class Piece : MonoBehaviour
 	}
 	private void Rotate(int direction)
 	{
-		if (board.lockWait || board.lineClearWait || board.tetrisClearWait)
+		if (!spawnedPiece)
 		{
 			return;
 		}
