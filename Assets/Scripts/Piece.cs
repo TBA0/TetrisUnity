@@ -285,7 +285,7 @@ public class Piece : MonoBehaviour
 		board.stats.text = "NEXT:\n\n\n\n\n\n\n\nHIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\nSCORE: " + string.Format("{0:n0}", board.score) + "\n\nLEVEL: " + board.level.ToString() + "\nLINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\nDROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\nTIME: " + elapsedTime.ToString();
 
 		//Clear board (always put actions below this line of code)
-		if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait))
+		if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait) && spawnedPiece)
 		{
 			this.board.Clear(this);
 		}
@@ -398,7 +398,7 @@ public class Piece : MonoBehaviour
 				{
 					Fall();
 				}
-				if (this.lockTime >= this.lockDelay)
+				if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait) && this.lockTime >= this.lockDelay)
 				{
 					this.board.SpawnPiece();
 					spawnedPiece = true;
@@ -406,7 +406,8 @@ public class Piece : MonoBehaviour
 				}
 			}
 		}
-		this.board.Set(this);
+		bool valid = CheckValidSpace(Vector2Int.down);
+		if (valid) this.board.Set(this);
 	}
 
 	private void Fall()
@@ -462,6 +463,14 @@ public class Piece : MonoBehaviour
 			continue;
 		}
 	}*/
+
+	private bool CheckValidSpace(Vector2Int translation)
+	{
+        Vector3Int newPosition = this.position;
+        newPosition.x += translation.x;
+        newPosition.y += translation.y;
+		return this.board.IsValidPosition(this, newPosition);
+    }
 
 
 	private bool Move(Vector2Int translation)
