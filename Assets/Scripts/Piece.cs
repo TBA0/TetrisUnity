@@ -572,21 +572,31 @@ public class Piece : MonoBehaviour
 			{
 				ApplyRotationMatrix(-direction);
 				unrotate = false;
+
+				if (!TestWallKicks(rotationIndex, -direction))
+				{
+					rotationIndex = originalRotation;
+					ApplyRotationMatrix(direction);
+				}
+				else
+				{
+					FindObjectOfType<AudioManager>().Play("Rotate");
+				}
 			}
 			else
 			{
 				ApplyRotationMatrix(direction);
 				unrotate = true;
-			}
 
-			if (!TestWallKicks(rotationIndex, direction))
-			{
-				rotationIndex = originalRotation;
-				ApplyRotationMatrix(-direction);
-			}
-			else
-			{
-				FindObjectOfType<AudioManager>().Play("Rotate");
+				if (!TestWallKicks(rotationIndex, direction))
+				{
+					rotationIndex = originalRotation;
+					ApplyRotationMatrix(-direction);
+				}
+				else
+				{
+					FindObjectOfType<AudioManager>().Play("Rotate");
+				}
 			}
 		}
 		else
