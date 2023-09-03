@@ -7,6 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Collections;
+using UnityEngine.UIElements;
+using System;
+using System.Linq;
 
 public class Board : MonoBehaviour
 {
@@ -49,6 +52,7 @@ public class Board : MonoBehaviour
 	public int transitionLines = 0;
 	public int transitionLevel = 0;
 	public int tetrises = 0;
+	public int tetrisScored = 0;
 
 	[SerializeField]
 	public TileBase Lv0A;
@@ -93,7 +97,7 @@ public class Board : MonoBehaviour
 
 	private void Awake()
 	{
-		int randomSkybox = Random.Range(0, skyboxes.Length);
+		int randomSkybox = UnityEngine.Random.Range(0, skyboxes.Length);
 		RenderSettings.skybox = skyboxes[randomSkybox];
 		stopwatch = new Stopwatch();
 		QualitySettings.vSyncCount = 0;
@@ -245,7 +249,7 @@ public class Board : MonoBehaviour
 		TetrominoData data;
 		if (nextPieceInt < 0)
 		{
-			int random = Random.Range(0, tetrominoes.Length);
+			int random = UnityEngine.Random.Range(0, tetrominoes.Length);
 			data = tetrominoes[random];
 		}
 		else
@@ -281,10 +285,10 @@ public class Board : MonoBehaviour
 
 	public void SpawnNextPiece()
 	{
-		nextPieceInt = Random.Range(0, tetrominoes.Length);
+		nextPieceInt = UnityEngine.Random.Range(0, tetrominoes.Length);
 		if (nextPieceInt == history)
 		{
-			nextPieceInt = Random.Range(0, tetrominoes.Length);
+			nextPieceInt = UnityEngine.Random.Range(0, tetrominoes.Length);
 		}
 		history = nextPieceInt;
 		if (nextPieceInt != 0)
@@ -306,7 +310,7 @@ public class Board : MonoBehaviour
 	public void ResetBoard()
 	{
 		tilemap.ClearAllTiles();
-		int randomSkybox = Random.Range(0, skyboxes.Length);
+		int randomSkybox = UnityEngine.Random.Range(0, skyboxes.Length);
 		RenderSettings.skybox = skyboxes[randomSkybox];
 		score = 0;
 		lines = 0;
@@ -402,15 +406,30 @@ public class Board : MonoBehaviour
 		{
 			if (IsLineFull(row))
 			{
-				LineClear(row);
 				linesCleared++;
 			}
-			else
+			row++;
+		}
+
+		row = bounds.yMin;
+		if (linesCleared > 0)
+		{
+			int i = 0;
+			int[] rows = new int[linesCleared];
+			while (row < bounds.yMax)
 			{
+				if (IsLineFull(row))
+				{
+					rows[i] = row;
+					i++;
+				}
 				row++;
 			}
+			ClearColoumnsOfLines(rows);
 		}
+
 		pointsScored = 0;
+		tetrisScored = 0;
 		switch (linesCleared)
 		{
 			case 0:
@@ -432,7 +451,7 @@ public class Board : MonoBehaviour
 				audioPlayer.Play("Tetris");
 				pointsScored = 1200 * (level + 1);
 				tetrisLines += 4;
-				tetrises += 1;
+				tetrisScored = 1;
 				break;
 			default:
 				break;
@@ -452,11 +471,13 @@ public class Board : MonoBehaviour
 		}
 		if (lineClearWait)
 		{
-			await Task.Delay(500);
+			await Task.Delay(528);
 			lineClearWait = false;
 		}
 
 		score += pointsScored;
+
+		tetrises += tetrisScored;
 
 		lines += linesCleared;
 		if (leveledUpOnce)
@@ -486,7 +507,7 @@ public class Board : MonoBehaviour
 		}
 		if (level != lastlevel)
 		{
-			int randomSkybox = Random.Range(0, skyboxes.Length);
+			int randomSkybox = UnityEngine.Random.Range(0, skyboxes.Length);
 			RenderSettings.skybox = skyboxes[randomSkybox];
 			ChangeColours();
 		}
@@ -703,7 +724,6 @@ public class Board : MonoBehaviour
 	}
 	private void LineClear(int row)
 	{
-
 		RectInt bounds = Bounds;
 
 		for (int col = bounds.xMin; col < bounds.xMax; col++)
@@ -722,7 +742,88 @@ public class Board : MonoBehaviour
 				position = new Vector3Int(col, row, 0);
 				tilemap.SetTile(position, above);
 			}
+			row++;
+		}
+	}
+	private async void ClearColoumnsOfLines(int[] rows)
+	{
+		Vector3Int position1 = new Vector3Int(0, 0, 0);
+		Vector3Int position2 = new Vector3Int(0, 0, 0);
+		await Task.Delay(132);
+		foreach (int row in rows)
+		{
+			position1 = new Vector3Int(-1, row, 0);
+			position2 = new Vector3Int(0, row, 0);
+			tilemap.SetTile(position1, null);
+			tilemap.SetTile(position2, null);
+		}
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 2.5f);
+		await Task.Delay(33);
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 1.0f);
+		await Task.Delay(33);
+		foreach (int row in rows)
+		{
+			position1 = new Vector3Int(-2, row, 0);
+			position2 = new Vector3Int(1, row, 0);
+			tilemap.SetTile(position1, null);
+			tilemap.SetTile(position2, null);
+		}
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 2.5f);
+		await Task.Delay(33);
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 1.0f);
+		await Task.Delay(33);
+		foreach (int row in rows)
+		{
+			position1 = new Vector3Int(-3, row, 0);
+			position2 = new Vector3Int(2, row, 0);
+			tilemap.SetTile(position1, null);
+			tilemap.SetTile(position2, null);
+		}
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 2.5f);
+		await Task.Delay(33);
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 1.0f);
+		await Task.Delay(33);
+		foreach (int row in rows)
+		{
+			position1 = new Vector3Int(-4, row, 0);
+			position2 = new Vector3Int(3, row, 0);
+			tilemap.SetTile(position1, null);
+			tilemap.SetTile(position2, null);
+		}
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 2.5f);
+		await Task.Delay(33);
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 1.0f);
+		await Task.Delay(33);
+		foreach (int row in rows)
+		{
+			position1 = new Vector3Int(-5, row, 0);
+			position2 = new Vector3Int(4, row, 0);
+			tilemap.SetTile(position1, null);
+			tilemap.SetTile(position2, null);
+		}
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 2.5f);
+		await Task.Delay(33);
+		if (tetrisScored == 1) RenderSettings.skybox.SetFloat("_Exposure", 1.0f);
+		await Task.Delay(33);
+		foreach (int row in rows.Reverse())
+		{
+			DropDownLine(row);
+		}
+	}
+	private void DropDownLine(int row)
+	{
+		RectInt bounds = Bounds;
 
+		while (row < bounds.yMax)
+		{
+			for (int col = bounds.xMin; col < bounds.xMax; col++)
+			{
+				Vector3Int position = new Vector3Int(col, row + 1, 0);
+				TileBase above = tilemap.GetTile(position);
+
+				position = new Vector3Int(col, row, 0);
+				tilemap.SetTile(position, above);
+			}
 			row++;
 		}
 	}
