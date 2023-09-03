@@ -53,6 +53,8 @@ public class Piece : MonoBehaviour
 
 	public bool resetButtonsNotPressed = true;
 
+	public bool reset = true;
+
 	private Input m_PlayerInput;
 	private ButtonControl b_Start;
 	private ButtonControl b_MoveLeft;
@@ -82,7 +84,15 @@ public class Piece : MonoBehaviour
 		this.position = position;
 		this.data = data;
 		rotationIndex = 0;
-		fallTime = Time.time + board.speed;
+		if (!reset)
+		{
+			fallTime = Time.time + board.speed;
+		}
+		else
+		{
+			fallTime = Time.time + 1.6f;
+			reset = false;
+		}
 		lockTime = 0f;
 		spawnedPiece = true;
 		pushdownPoints = 0;
@@ -469,6 +479,7 @@ public class Piece : MonoBehaviour
 	public void Reset()
 	{
 		fallTime = Time.time + 1.6f;
+		reset = true;
 		paused = false;
 		board.pausedText.text = "";
 		board.tilemapRenderer.sortingOrder = 2;
