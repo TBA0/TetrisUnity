@@ -1,1 +1,1 @@
-start-speed=15
+start-speed=9

@@ -13,14 +13,14 @@ public class NextPiece : MonoBehaviour
 		this.data = data;
 
 
-		if (this.cells == null)
+		if (cells == null)
 		{
-			this.cells = new Vector3Int[data.cells.Length];
+			cells = new Vector3Int[data.cells.Length];
 		}
 
 		for (int i = 0; i < data.cells.Length; i++)
 		{
-			this.cells[i] = (Vector3Int)data.cells[i];
+			cells[i] = (Vector3Int)data.cells[i];
 		}
 		this.board.ClearNext(this, this.board);
 		this.board.SetNext(this);

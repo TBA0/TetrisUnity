@@ -35,10 +35,8 @@ public class Board : MonoBehaviour
 	public float speed = 0.8f;
 	private float wait;
 	public bool lineClearWait = false;
-	public bool tetrisClearWait = false;
 	public bool lockWait = false;
-	public float lineClearWaitTime = 0.4f;
-	public float tetrisClearWaitTime = 0.6f;
+	public float lineClearWaitTime = 0.5f;
 	public float lockWaitTime = 0.2f;
 	public bool gameOver = false;
 	public int pointsScored = 0;
@@ -88,8 +86,8 @@ public class Board : MonoBehaviour
 	{
 		get
 		{
-			Vector2Int position = new Vector2Int(-this.boardSize.x / 2, -this.boardSize.y / 2);
-			return new RectInt(position, this.boardSize);
+			Vector2Int position = new Vector2Int(-boardSize.x / 2, -boardSize.y / 2);
+			return new RectInt(position, boardSize);
 		}
 	}
 
@@ -109,19 +107,20 @@ public class Board : MonoBehaviour
 		{
 			ReadSettingsFile("settings.txt");
 		}
+		level = settings.startLevel;
 		prevLevel = settings.startLevel;
-		this.tilemap = GetComponentInChildren<Tilemap>();
-		this.activePiece = GetComponentInChildren<Piece>();
-		this.nextPiece = GetComponentInChildren<NextPiece>();
-		this.text = GetComponentsInChildren<Text>();
-		this.audioPlayer = FindObjectOfType<AudioManager>();
-		this.tilemapRenderer = FindObjectOfType<TilemapRenderer>();
-		this.stats = text[0];
-		this.pausedText = text[1];
+		tilemap = GetComponentInChildren<Tilemap>();
+		activePiece = GetComponentInChildren<Piece>();
+		nextPiece = GetComponentInChildren<NextPiece>();
+		text = GetComponentsInChildren<Text>();
+		audioPlayer = FindObjectOfType<AudioManager>();
+		tilemapRenderer = FindObjectOfType<TilemapRenderer>();
+		stats = text[0];
+		pausedText = text[1];
 
 		for (int i = 0; i < tetrominoes.Length; i++)
 		{
-			this.tetrominoes[i].Initialize();
+			tetrominoes[i].Initialize();
 		}
 	}
 
@@ -129,11 +128,7 @@ public class Board : MonoBehaviour
 	{
 		stopwatch.Start();
 		gameOver = false;
-		if (File.Exists("settings.txt"))
-		{
-			ReadSettingsFile("settings.txt");
-		}
-		level = settings.startLevel;
+		ChangeColours();
 		SpawnPiece();
 		SpawnNextPiece();
 	}
@@ -250,19 +245,20 @@ public class Board : MonoBehaviour
 		TetrominoData data;
 		if (nextPieceInt < 0)
 		{
-			int random = Random.Range(0, this.tetrominoes.Length);
-			data = this.tetrominoes[random];
+			int random = Random.Range(0, tetrominoes.Length);
+			data = tetrominoes[random];
 		}
 		else
 		{
-			data = this.tetrominoes[nextPieceInt];
+			data = tetrominoes[nextPieceInt];
 		}
 
-		this.activePiece.Initialize(this, this.spawnPosition, data);
+		activePiece.Initialize(this, spawnPosition, data);
 
-		if (IsValidPosition(this.activePiece, this.spawnPosition))
+		if (IsValidPosition(activePiece, spawnPosition))
 		{
-			Set(this.activePiece);
+			activePiece.spawnedPiece = true;
+			Set(activePiece);
 		}
 		else
 		{
@@ -285,10 +281,10 @@ public class Board : MonoBehaviour
 
 	public void SpawnNextPiece()
 	{
-		nextPieceInt = Random.Range(0, this.tetrominoes.Length);
+		nextPieceInt = Random.Range(0, tetrominoes.Length);
 		if (nextPieceInt == history)
 		{
-			nextPieceInt = Random.Range(0, this.tetrominoes.Length);
+			nextPieceInt = Random.Range(0, tetrominoes.Length);
 		}
 		history = nextPieceInt;
 		if (nextPieceInt != 0)
@@ -303,13 +299,13 @@ public class Board : MonoBehaviour
 		{
 			maxDrought = droughtCounter;
 		}
-		TetrominoData data = this.tetrominoes[nextPieceInt];
-		this.nextPiece.Initialize(this, new Vector3Int(8, 4, 0), data);
+		TetrominoData data = tetrominoes[nextPieceInt];
+		nextPiece.Initialize(this, new Vector3Int(8, 4, 0), data);
 	}
 
 	public void ResetBoard()
 	{
-		this.tilemap.ClearAllTiles();
+		tilemap.ClearAllTiles();
 		int randomSkybox = Random.Range(0, skyboxes.Length);
 		RenderSettings.skybox = skyboxes[randomSkybox];
 		score = 0;
@@ -320,6 +316,7 @@ public class Board : MonoBehaviour
 		maxDrought = 0;
 		stopwatch.Restart();
 		level = settings.startLevel;
+		ChangeColours();
 		leveledUpOnce = false;
 		transitionLevel = 0;
 		transitionLines = 0;
@@ -331,7 +328,7 @@ public class Board : MonoBehaviour
 		for (int i = 0; i < piece.cells.Length; i++)
 		{
 			Vector3Int tilePosition = piece.cells[i] + piece.position;
-			this.tilemap.SetTile(tilePosition, piece.data.tile);
+			tilemap.SetTile(tilePosition, piece.data.tile);
 		}
 	}
 
@@ -340,7 +337,7 @@ public class Board : MonoBehaviour
 		for (int i = 0; i < piece.cells.Length; i++)
 		{
 			Vector3Int tilePosition = piece.cells[i] + piece.position;
-			this.tilemap.SetTile(tilePosition, piece.data.tile);
+			tilemap.SetTile(tilePosition, piece.data.tile);
 		}
 	}
 
@@ -349,7 +346,7 @@ public class Board : MonoBehaviour
 		for (int i = 0; i < piece.cells.Length; i++)
 		{
 			Vector3Int tilePosition = piece.cells[i] + piece.position;
-			this.tilemap.SetTile(tilePosition, null);
+			tilemap.SetTile(tilePosition, null);
 		}
 	}
 	public void ClearNext(NextPiece piece, Board board)
@@ -357,25 +354,25 @@ public class Board : MonoBehaviour
 		for (int i = 0; i < piece.cells.Length; i++)
 		{
 			Vector3Int tilePosition = piece.cells[i] + piece.position;
-			this.tilemap.SetTile(tilePosition, null);
+			tilemap.SetTile(tilePosition, null);
 		}
-		this.tilemap.SetTile(new Vector3Int(6, 4, 0), null);
-		this.tilemap.SetTile(new Vector3Int(7, 4, 0), null);
-		this.tilemap.SetTile(new Vector3Int(8, 4, 0), null);
-		this.tilemap.SetTile(new Vector3Int(9, 4, 0), null);
-		this.tilemap.SetTile(new Vector3Int(6, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(7, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(8, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(9, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(6, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(7, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(8, 3, 0), null);
-		this.tilemap.SetTile(new Vector3Int(9, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(6, 4, 0), null);
+		tilemap.SetTile(new Vector3Int(7, 4, 0), null);
+		tilemap.SetTile(new Vector3Int(8, 4, 0), null);
+		tilemap.SetTile(new Vector3Int(9, 4, 0), null);
+		tilemap.SetTile(new Vector3Int(6, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(7, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(8, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(9, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(6, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(7, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(8, 3, 0), null);
+		tilemap.SetTile(new Vector3Int(9, 3, 0), null);
 	}
 
 	public bool IsValidPosition(Piece piece, Vector3Int position)
 	{
-		RectInt bounds = this.Bounds;
+		RectInt bounds = Bounds;
 
 		for(int i = 0; i < piece.cells.Length; i++)
 		{
@@ -386,7 +383,7 @@ public class Board : MonoBehaviour
 				return false;
 			}
 
-			if (this.tilemap.HasTile(tilePosition))
+			if (tilemap.HasTile(tilePosition))
 			{
 				return false;
 			}
@@ -394,47 +391,9 @@ public class Board : MonoBehaviour
 		return true;
 	}
 
-/*	public void lineClearThread()
-	{
-		Dispatcher.ExecuteOnMainThread.Enqueue(() =>
-		{
-			switch (linesCleared)
-			{
-				case 0:
-					audioPlayer.Play("Lock");
-					break;
-				case 1:
-					audioPlayer.Play("LineClear");
-					pointsScored = 40 * (level + 1);
-					score += pointsScored;
-					break;
-				case 2:
-					audioPlayer.Play("LineClear");
-					pointsScored = 100 * (level + 1);
-					score += pointsScored;
-					break;
-				case 3:
-					audioPlayer.Play("LineClear");
-					pointsScored = 300 * (level + 1);
-					score += pointsScored;
-					break;
-				case 4:
-					audioPlayer.Play("Tetris");
-					pointsScored = 1200 * (level + 1);
-					score += pointsScored;
-					tetrisLines += 4;
-					break;
-				default:
-					break;
-			}
-			Debug.Log("This is a debug log called on the main thread!");
-			Debug.Log("This is another debug log!");
-		});
-	}*/
-
 	async public void ClearLines()
 	{
-		RectInt bounds = this.Bounds;
+		RectInt bounds = Bounds;
 		int row = bounds.yMin;
 
 		linesCleared = 0;
@@ -443,8 +402,8 @@ public class Board : MonoBehaviour
 		{
 			if (IsLineFull(row))
 			{
-				linesCleared++;
 				LineClear(row);
+				linesCleared++;
 			}
 			else
 			{
@@ -459,37 +418,27 @@ public class Board : MonoBehaviour
 			case 1:
 				audioPlayer.Play("LineClear");
 				pointsScored = 40 * (level + 1);
-				score += pointsScored;
 				break;
 			case 2:
 				audioPlayer.Play("LineClear");
 				pointsScored = 100 * (level + 1);
-				score += pointsScored;
 				break;
 			case 3:
 				audioPlayer.Play("LineClear");
 				pointsScored = 300 * (level + 1);
-				score += pointsScored;
 				break;
 			case 4:
 				audioPlayer.Play("Tetris");
 				pointsScored = 1200 * (level + 1);
-				score += pointsScored;
 				tetrisLines += 4;
 				tetrises += 1;
 				break;
 			default:
 				break;
 		}
-		//Thread lineClearThread = new Thread(this.lineClearThread);
-		//lineClearThread.Start();
-		if (linesCleared > 0 && linesCleared < 4)
+		if (linesCleared > 0)
 		{
 			lineClearWait = true;
-		}
-		else if (linesCleared > 3)
-		{
-			tetrisClearWait = true;
 		}
 		else
 		{
@@ -497,20 +446,17 @@ public class Board : MonoBehaviour
 		}
 		if (lockWait)
 		{
-			await Task.Delay(200);
+			await Task.Delay(132);
 			lockWait = false;
 		}
 		if (lineClearWait)
 		{
-			await Task.Delay(400);
+			await Task.Delay(500);
 			lineClearWait = false;
 		}
-		if (tetrisClearWait)
-		{
-			await Task.Delay(600);
-			tetrisClearWait = false;
-		}
-		
+
+		score += pointsScored;
+
 		lines += linesCleared;
 		if (leveledUpOnce)
 		{
@@ -521,9 +467,9 @@ public class Board : MonoBehaviour
 			tetrisRate = Mathf.Round(((float)tetrisLines / (float)lines) * 100f);
 		}
 		int lastlevel = level;
+		prevLevel = level;
 		if (int.Parse((lines / 10).ToString(), System.Globalization.NumberStyles.HexNumber) > level && !leveledUpOnce)
 		{
-			prevLevel = level;
 			level += 1;
 			leveledUpOnce = true;
 		}
@@ -532,15 +478,30 @@ public class Board : MonoBehaviour
 			level += 1;
 			transitionLevel += 1;
 		}
-		int levelColour = level % 10;
-		int prevLevelColour = prevLevel % 10;
 
-		if (level != lastlevel)
+		if (level > lastlevel)
 		{
 			audioPlayer.Play("LevelUp");
+		}
+		if (level != lastlevel)
+		{
 			int randomSkybox = Random.Range(0, skyboxes.Length);
 			RenderSettings.skybox = skyboxes[randomSkybox];
+			ChangeColours();
 		}
+
+		//UnityEngine.Debug.Log("Lines Cleared: " + linesCleared);
+		//UnityEngine.Debug.Log("Points Scored: " + pointsScored);
+		//UnityEngine.Debug.Log("---------------------------------");
+		//UnityEngine.Debug.Log("Lines: " + lines);
+		//UnityEngine.Debug.Log("Level: " + level);
+		//UnityEngine.Debug.Log("Score: " + score);
+	}
+
+	private void ChangeColours()
+	{
+		int levelColour = level % 10;
+		int prevLevelColour = prevLevel % 10;
 
 		TileBase currentTileA = Lv0A;
 		TileBase currentTileB = Lv0B;
@@ -600,116 +561,139 @@ public class Board : MonoBehaviour
 		}
 		switch (levelColour)
 		{
-			
+
 			case 0:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv0;
 				}
-				tilemap.SwapTile(currentTileA, Lv0A);
-				tilemap.SwapTile(currentTileB, Lv0B);
-				tilemap.SwapTile(currentTileC, Lv0C);
+				if (currentTileA != Lv0A)
+				{
+					tilemap.SwapTile(currentTileA, Lv0A);
+					tilemap.SwapTile(currentTileB, Lv0B);
+					tilemap.SwapTile(currentTileC, Lv0C);
+				}
 				break;
 			case 1:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv1;
 				}
-				tilemap.SwapTile(currentTileA, Lv1A);
-				tilemap.SwapTile(currentTileB, Lv1B);
-				tilemap.SwapTile(currentTileC, Lv1C);
+				if (currentTileA != Lv1A)
+				{
+					tilemap.SwapTile(currentTileA, Lv1A);
+					tilemap.SwapTile(currentTileB, Lv1B);
+					tilemap.SwapTile(currentTileC, Lv1C);
+				}
 				break;
 			case 2:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv2;
 				}
-				tilemap.SwapTile(currentTileA, Lv2A);
-				tilemap.SwapTile(currentTileB, Lv2B);
-				tilemap.SwapTile(currentTileC, Lv2C);
+				if (currentTileA != Lv2A)
+				{
+					tilemap.SwapTile(currentTileA, Lv2A);
+					tilemap.SwapTile(currentTileB, Lv2B);
+					tilemap.SwapTile(currentTileC, Lv2C);
+				}
 				break;
 			case 3:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv3;
 				}
-				tilemap.SwapTile(currentTileA, Lv3A);
-				tilemap.SwapTile(currentTileB, Lv3B);
-				tilemap.SwapTile(currentTileC, Lv3C);
+				if (currentTileA != Lv3A)
+				{
+					tilemap.SwapTile(currentTileA, Lv3A);
+					tilemap.SwapTile(currentTileB, Lv3B);
+					tilemap.SwapTile(currentTileC, Lv3C);
+				}
 				break;
 			case 4:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv4;
 				}
-				tilemap.SwapTile(currentTileA, Lv4A);
-				tilemap.SwapTile(currentTileB, Lv4B);
-				tilemap.SwapTile(currentTileC, Lv4C);
+				if (currentTileA != Lv4A)
+				{
+					tilemap.SwapTile(currentTileA, Lv4A);
+					tilemap.SwapTile(currentTileB, Lv4B);
+					tilemap.SwapTile(currentTileC, Lv4C);
+				}
 				break;
 			case 5:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv5;
 				}
-				tilemap.SwapTile(currentTileA, Lv5A);
-				tilemap.SwapTile(currentTileB, Lv5B);
-				tilemap.SwapTile(currentTileC, Lv5C);
+				if (currentTileA != Lv5A)
+				{
+					tilemap.SwapTile(currentTileA, Lv5A);
+					tilemap.SwapTile(currentTileB, Lv5B);
+					tilemap.SwapTile(currentTileC, Lv5C);
+				}
 				break;
 			case 6:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv6;
 				}
-				tilemap.SwapTile(currentTileA, Lv6A);
-				tilemap.SwapTile(currentTileB, Lv6B);
-				tilemap.SwapTile(currentTileC, Lv6C);
+				if (currentTileA != Lv6A)
+				{
+					tilemap.SwapTile(currentTileA, Lv6A);
+					tilemap.SwapTile(currentTileB, Lv6B);
+					tilemap.SwapTile(currentTileC, Lv6C);
+				}
 				break;
 			case 7:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv7;
 				}
-				tilemap.SwapTile(currentTileA, Lv7A);
-				tilemap.SwapTile(currentTileB, Lv7B);
-				tilemap.SwapTile(currentTileC, Lv7C);
+				if (currentTileA != Lv7A)
+				{
+					tilemap.SwapTile(currentTileA, Lv7A);
+					tilemap.SwapTile(currentTileB, Lv7B);
+					tilemap.SwapTile(currentTileC, Lv7C);
+				}
 				break;
 			case 8:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv8;
 				}
-				tilemap.SwapTile(currentTileA, Lv8A);
-				tilemap.SwapTile(currentTileB, Lv8B);
-				tilemap.SwapTile(currentTileC, Lv8C);
+				if (currentTileA != Lv8A)
+				{
+					tilemap.SwapTile(currentTileA, Lv8A);
+					tilemap.SwapTile(currentTileB, Lv8B);
+					tilemap.SwapTile(currentTileC, Lv8C);
+				}
 				break;
 			case 9:
 				for (int i = 0; i < tetrominoes.Length; i++)
 				{
 					tetrominoes[i].tile = tetrominoes[i].Lv9;
 				}
-				tilemap.SwapTile(currentTileA, Lv9A);
-				tilemap.SwapTile(currentTileB, Lv9B);
-				tilemap.SwapTile(currentTileC, Lv9C);
+				if (currentTileA != Lv9A)
+				{
+					tilemap.SwapTile(currentTileA, Lv9A);
+					tilemap.SwapTile(currentTileB, Lv9B);
+					tilemap.SwapTile(currentTileC, Lv9C);
+				}
 				break;
 		}
-
-		//UnityEngine.Debug.Log("Lines Cleared: " + linesCleared);
-		//UnityEngine.Debug.Log("Points Scored: " + pointsScored);
-		//UnityEngine.Debug.Log("---------------------------------");
-		//UnityEngine.Debug.Log("Lines: " + lines);
-		//UnityEngine.Debug.Log("Level: " + level);
-		//UnityEngine.Debug.Log("Score: " + score);
 	}
 
 	private bool IsLineFull(int row)
 	{
-		RectInt bounds = this.Bounds;
+		RectInt bounds = Bounds;
 
 		for(int col = bounds.xMin; col< bounds.xMax; col++)
 		{
 			Vector3Int position = new Vector3Int(col, row, 0);
 
-			if (!this.tilemap.HasTile(position))
+			if (!tilemap.HasTile(position))
 			{
 				return false;
 			}
@@ -719,23 +703,23 @@ public class Board : MonoBehaviour
 	private void LineClear(int row)
 	{
 
-		RectInt bounds = this.Bounds;
+		RectInt bounds = Bounds;
 
 		for (int col = bounds.xMin; col < bounds.xMax; col++)
 		{
 			Vector3Int position = new Vector3Int(col, row, 0);
 
-			this.tilemap.SetTile(position, null);
+			tilemap.SetTile(position, null);
 		}
 		while (row < bounds.yMax)
 		{
 			for (int col = bounds.xMin; col < bounds.xMax; col++)
 			{
 				Vector3Int position = new Vector3Int(col, row + 1, 0);
-				TileBase above = this.tilemap.GetTile(position);
+				TileBase above = tilemap.GetTile(position);
 
 				position = new Vector3Int(col, row, 0);
-				this.tilemap.SetTile(position, above);
+				tilemap.SetTile(position, above);
 			}
 
 			row++;

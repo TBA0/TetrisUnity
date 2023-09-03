@@ -18,9 +18,10 @@ public class Piece : MonoBehaviour
 
 	private bool pushedDown = false;
 	private bool pushingDown = false;
+	private int pushdownPoints = 0;
 
 	public float time = 0f;
-	public float fallTime = Speed.Lv0;
+	public float fallTime = 1.6f;
 	private float lockTime;
 
 	private float downTime, upTime, pressTime = 0;
@@ -34,10 +35,14 @@ public class Piece : MonoBehaviour
 
 	public bool holdingDas = false;
 
+	public bool unrotate = false;
+
 	public float HAxis = 0f;
 	public float VAxis = 0f;
 
 	public float boardSpeed = 0f;
+
+	public bool pieceLocked = false;
 
 	public bool spawnedPiece = true;
 
@@ -76,21 +81,22 @@ public class Piece : MonoBehaviour
 		this.board = board;
 		this.position = position;
 		this.data = data;
-		this.rotationIndex = 0;
-		this.fallTime = Time.time + board.speed;
-		this.lockTime = 0f;
-		this.spawnedPiece = true;
+		rotationIndex = 0;
+		fallTime = Time.time + board.speed;
+		lockTime = 0f;
+		spawnedPiece = true;
+		pushdownPoints = 0;
 
+		unrotate = false;
 
-
-		if (this.cells == null)
+		if (cells == null)
 		{
-			this.cells = new Vector3Int[data.cells.Length];
+			cells = new Vector3Int[data.cells.Length];
 		}
 
 		for (int i = 0; i < data.cells.Length; i++)
 		{
-			this.cells[i] = (Vector3Int)data.cells[i];
+			cells[i] = (Vector3Int)data.cells[i];
 		}
 
 	}
@@ -206,12 +212,12 @@ public class Piece : MonoBehaviour
 
 		board.ts = board.stopwatch.Elapsed;
 
-		this.time = Time.time;
+		time = Time.time;
 		boardSpeed = board.speed;
 		//HAxis = Input.GetAxisRaw("Horizontal");
 		//VAxis = Input.GetAxisRaw("Vertical");
 
-		this.lockTime += Time.deltaTime;
+		lockTime += Time.deltaTime;
 
 		//Speed levels
 		switch (board.level)
@@ -285,9 +291,9 @@ public class Piece : MonoBehaviour
 		board.stats.text = "NEXT:\n\n\n\n\n\n\n\nHIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\nSCORE: " + string.Format("{0:n0}", board.score) + "\n\nLEVEL: " + board.level.ToString() + "\nLINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\nDROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\nTIME: " + elapsedTime.ToString();
 
 		//Clear board (always put actions below this line of code)
-		if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait) && spawnedPiece)
+		if (!(board.lockWait || board.lineClearWait) && spawnedPiece)
 		{
-			this.board.Clear(this);
+			board.Clear(this);
 		}
 
 		//Move
@@ -372,7 +378,14 @@ public class Piece : MonoBehaviour
 		//Rotations
 		if (b_RotateCCW.wasPressedThisFrame)
 		{
-			Rotate(-1);
+			if (data.tetromino == Tetromino.S || data.tetromino == Tetromino.Z || data.tetromino == Tetromino.I)
+			{
+				Rotate(1);
+			}
+			else
+			{
+				Rotate(-1);
+			}
 		}
 		else if (b_RotateCW.wasPressedThisFrame)
 		{
@@ -380,69 +393,67 @@ public class Piece : MonoBehaviour
 		}
 
 		//Hard drop
-		/*if (Input.GetKeyDown(KeyCode.UpArrow))
-		{
-			HardDrop();
-		}*/
+		//if (Input.GetKeyDown(KeyCode.UpArrow))
+		//{
+		//HardDrop();
+		//}
 
 		//Fall
-		if (Time.time >= this.fallTime)
+		if (Time.time >= fallTime)
 		{
 			if (pushingDown && pushedDown)
 			{
-				board.score += 1;
+				pushdownPoints += 1;
 			}
-			if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait))
+			else
+			{
+				pushdownPoints = 0;
+			}
+			if (!(board.lockWait || board.lineClearWait))
 			{
 				if (spawnedPiece)
 				{
 					Fall();
 				}
-				if (!(board.lockWait || board.lineClearWait || board.tetrisClearWait) && this.lockTime >= this.lockDelay)
-				{
-					this.board.SpawnPiece();
-					spawnedPiece = true;
-					this.board.SpawnNextPiece();
-				}
 			}
 		}
-		bool valid = CheckValidSpace(Vector2Int.down);
-		if (Time.time >= this.fallTime)
+		if (!spawnedPiece)
 		{
-			if (valid)
+			if (!(board.lockWait || board.lineClearWait))
 			{
-				this.board.Set(this);
+				board.SpawnPiece();
+				board.SpawnNextPiece();
+				spawnedPiece = true;
 			}
 		}
-		else if (spawnedPiece)
+		if (!(board.lockWait || board.lineClearWait))
 		{
-			this.board.Set(this);
+			board.Clear(this);
+		}
+		if (!(board.lockWait || board.lineClearWait))
+		{
+			board.Set(this);
 		}
 	}
 
 	private void Fall()
 	{
-		if (board.lockWait || board.lineClearWait || board.tetrisClearWait)
-		{
-			return;
-		}
-
-		this.fallTime = Time.time + board.speed;
+		fallTime = Time.time + board.speed;
 
 		Move(Vector2Int.down);
-		if (this.lockTime >= this.lockDelay)
+
+		board.Set(this);
+
+		if (lockTime >= lockDelay)
 		{
-			pushedDown = false;
-			readyLeft = false;
-			readyRight = false;
-			board.speed = prevFallDelay;
-			this.board.Set(this);
-			this.board.ClearLines();
-			if (board.lockWait || board.lineClearWait || board.tetrisClearWait)
+			if (pushingDown && pushedDown)
 			{
-				spawnedPiece = false;
-				return;
+				board.score = pushdownPoints;
 			}
+			pushedDown = false;
+			board.speed = prevFallDelay;
+			board.ClearLines();
+			spawnedPiece = false;
 		}
 	}
 
@@ -457,11 +468,12 @@ public class Piece : MonoBehaviour
 
 	public void Reset()
 	{
+		fallTime = Time.time + 1.6f;
 		paused = false;
 		board.pausedText.text = "";
 		board.tilemapRenderer.sortingOrder = 2;
 		board.gameOver = false;
-		board.ResetBoard(); 
+		board.ResetBoard();
 		board.SpawnPiece();
 		board.SpawnNextPiece();
 	}
@@ -476,25 +488,25 @@ public class Piece : MonoBehaviour
 
 	private bool CheckValidSpace(Vector2Int translation)
 	{
-        Vector3Int newPosition = this.position;
+        Vector3Int newPosition = position;
         newPosition.x += translation.x;
         newPosition.y += translation.y;
-		return this.board.IsValidPosition(this, newPosition);
+		return board.IsValidPosition(this, newPosition);
     }
 
 
 	private bool Move(Vector2Int translation)
 	{
-		if (board.lockWait || board.lineClearWait || board.tetrisClearWait)
+		if (board.lockWait || board.lineClearWait)
 		{
 			return true;
 		}
-		Vector3Int newPosition = this.position;
+		Vector3Int newPosition = position;
 		Vector3Int origPosition = newPosition;
 		newPosition.x += translation.x;
 		newPosition.y += translation.y;
 
-		bool valid = this.board.IsValidPosition(this, newPosition);
+		bool valid = board.IsValidPosition(this, newPosition);
 
 		if (valid)
 		{
@@ -502,19 +514,20 @@ public class Piece : MonoBehaviour
 			{
 				FindObjectOfType<AudioManager>().Play("Shift");
 			}
-			this.position = newPosition;
-			this.lockTime = 0f;
+			position = newPosition;
+			lockTime = 0f;
 		}
 
 		return valid;
 	}
 	private void Rotate(int direction)
 	{
+		if (board.lockWait || board.lineClearWait) return;
 		if (!spawnedPiece)
 		{
 			return;
 		}
-		int originalRotation = this.rotationIndex;
+		int originalRotation = rotationIndex;
 		/*switch (this.data.tetromino)
 		{
 			case Tetromino.I:
@@ -531,14 +544,41 @@ public class Piece : MonoBehaviour
 				break;
 		}*/
 
-		if (this.data.tetromino != Tetromino.O)
+		if (data.tetromino != Tetromino.O && data.tetromino != Tetromino.I && data.tetromino != Tetromino.S && data.tetromino != Tetromino.Z)
 		{
 			ApplyRotationMatrix(direction);
 
-			if (!TestWallKicks(this.rotationIndex, direction))
+			if (!TestWallKicks(rotationIndex, direction))
 			{
-				this.rotationIndex = originalRotation;
+				rotationIndex = originalRotation;
 				ApplyRotationMatrix(-direction);
+			}
+			else
+			{
+				FindObjectOfType<AudioManager>().Play("Rotate");
+			}
+		}
+		else if (data.tetromino != Tetromino.O)
+		{
+			if (unrotate)
+			{
+				ApplyRotationMatrix(-direction);
+				unrotate = false;
+			}
+			else
+			{
+				ApplyRotationMatrix(direction);
+				unrotate = true;
+			}
+
+			if (!TestWallKicks(rotationIndex, direction))
+			{
+				rotationIndex = originalRotation;
+				ApplyRotationMatrix(-direction);
+			}
+			else
+			{
+				FindObjectOfType<AudioManager>().Play("Rotate");
 			}
 		}
 		else
@@ -549,18 +589,16 @@ public class Piece : MonoBehaviour
 
 	private void ApplyRotationMatrix(int direction)
 	{
-		FindObjectOfType<AudioManager>().Play("Rotate");
-
-		for (int i = 0; i < this.data.cells.Length; i++)
+		for (int i = 0; i < data.cells.Length; i++)
 		{
-			Vector3 cell = this.cells[i];
+			Vector3 cell = cells[i];
 
 			int x, y;
 
 			x = Mathf.RoundToInt((cell.x * Data.RotationMatrix[0] * direction) + (cell.y * Data.RotationMatrix[1] * direction));
 			y = Mathf.RoundToInt((cell.x * Data.RotationMatrix[2] * direction) + (cell.y * Data.RotationMatrix[3] * direction));
 
-			this.cells[i] = new Vector3Int(x, y, 0);
+			cells[i] = new Vector3Int(x, y, 0);
 		}
 	}
 
@@ -568,9 +606,9 @@ public class Piece : MonoBehaviour
 	{
 		int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
 
-		for (int i = 0; i < this.data.wallKicks.GetLength(1); i++)
+		for (int i = 0; i < data.wallKicks.GetLength(1); i++)
 		{
-			Vector2Int translation = this.data.wallKicks[wallKickIndex, i];
+			Vector2Int translation = data.wallKicks[wallKickIndex, i];
 
 			if (Move(translation))
 			{
@@ -589,7 +627,7 @@ public class Piece : MonoBehaviour
 			wallKickIndex--;
 		}
 
-		return Wrap(wallKickIndex, 0, this.data.wallKicks.GetLength(0));
+		return Wrap(wallKickIndex, 0, data.wallKicks.GetLength(0));
 	}
 
 	public int Wrap(int input, int min, int max)
