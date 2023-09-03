@@ -18,7 +18,7 @@ public class Piece : MonoBehaviour
 
 	private bool pushedDown = false;
 	private bool pushingDown = false;
-	private int pushdownPoints = 0;
+	public int pushdownPoints = 0;
 
 	public float time = 0f;
 	public float fallTime = 1.6f;
@@ -411,7 +411,7 @@ public class Piece : MonoBehaviour
 		//Fall
 		if (Time.time >= fallTime)
 		{
-			if (pushingDown && pushedDown)
+			if (pushedDown)
 			{
 				pushdownPoints += 1;
 			}
@@ -456,10 +456,7 @@ public class Piece : MonoBehaviour
 
 		if (lockTime >= lockDelay)
 		{
-			if (pushingDown && pushedDown)
-			{
-				board.score = pushdownPoints;
-			}
+			board.score += pushdownPoints;
 			pushedDown = false;
 			board.speed = prevFallDelay;
 			board.ClearLines();

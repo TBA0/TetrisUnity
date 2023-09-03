@@ -410,6 +410,7 @@ public class Board : MonoBehaviour
 				row++;
 			}
 		}
+		pointsScored = 0;
 		switch (linesCleared)
 		{
 			case 0:
