@@ -308,13 +308,14 @@ public class Piece : MonoBehaviour
 
 		//Move
 		//left
-		if (b_MoveLeft.wasPressedThisFrame && !readyLeft)
+		if (b_MoveLeft.wasPressedThisFrame && !readyLeft && !pushedDown)
 		{
 			Move(Vector2Int.left);
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyLeft = true;
 		}
+		if (b_SoftDrop.wasPressedThisFrame) readyLeft = false;
 		if (b_MoveLeft.wasReleasedThisFrame)
 		{
 			readyLeft = false;
@@ -337,13 +338,14 @@ public class Piece : MonoBehaviour
 		}
 
 		//right
-		if (b_MoveRight.wasPressedThisFrame && !readyRight)
+		if (b_MoveRight.wasPressedThisFrame && !readyRight && !pushedDown)
 		{
 			Move(Vector2Int.right);
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyRight = true;
 		}
+		if (b_SoftDrop.wasPressedThisFrame) readyRight = false;
 		if (b_MoveRight.wasReleasedThisFrame)
 		{
 			readyRight = false;
@@ -366,13 +368,14 @@ public class Piece : MonoBehaviour
 		}
 
 		//Pushdown
-		if (b_SoftDrop.wasPressedThisFrame)
+		if (b_SoftDrop.wasPressedThisFrame && !holdingDas)
 		{
 			pushedDown = true;
 			fallTime = Time.time;
 		}
 		if (pushedDown)
 		{
+			if (b_MoveRight.wasPressedThisFrame || b_MoveLeft.wasPressedThisFrame) pushedDown = false;
 			prevFallDelay = board.speed;
 			if (board.level < 19)
 			{
