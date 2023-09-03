@@ -38,6 +38,7 @@ public class Board : MonoBehaviour
 	public float speed = 0.8f;
 	private float wait;
 	public bool lineClearWait = false;
+	public bool lineClearUpdateDelay = false;
 	public bool lockWait = false;
 	public float lineClearWaitTime = 0.5f;
 	public float lockWaitTime = 0.2f;
@@ -459,6 +460,7 @@ public class Board : MonoBehaviour
 		if (linesCleared > 0)
 		{
 			lineClearWait = true;
+			lineClearUpdateDelay = true;
 		}
 		else
 		{
@@ -469,10 +471,10 @@ public class Board : MonoBehaviour
 			await Task.Delay(132);
 			lockWait = false;
 		}
-		if (lineClearWait)
+		if (lineClearUpdateDelay)
 		{
 			await Task.Delay(528);
-			lineClearWait = false;
+			lineClearUpdateDelay = false;
 		}
 
 		score += pointsScored;
@@ -809,6 +811,7 @@ public class Board : MonoBehaviour
 		{
 			DropDownLine(row);
 		}
+		lineClearWait = false;
 	}
 	private void DropDownLine(int row)
 	{
