@@ -107,11 +107,6 @@ public class Board : MonoBehaviour
 		{
 			highscore = PlayerPrefs.GetInt("HighScore", highscore);
 		}
-		settings.startLevel = 0;
-		if (File.Exists("settings.txt"))
-		{
-			ReadSettingsFile("settings.txt");
-		}
 		level = settings.startLevel;
 		prevLevel = settings.startLevel;
 		tilemap = GetComponentInChildren<Tilemap>();
@@ -136,113 +131,6 @@ public class Board : MonoBehaviour
 		ChangeColours();
 		SpawnPiece();
 		SpawnNextPiece();
-	}
-	public void ReadSettingsFile(string dir)
-	{
-		StreamReader reader = new StreamReader(dir);
-		string line;
-		while((line = reader.ReadLine()) != null)
-		{
-			switch (line)
-			{
-				case "start-speed=0":
-					settings.startLevel = 0;
-					break;
-				case "start-speed=1":
-					settings.startLevel = 1;
-					break;
-				case "start-speed=2":
-					settings.startLevel = 2;
-					break;
-				case "start-speed=3":
-					settings.startLevel = 3;
-					break;
-				case "start-speed=4":
-					settings.startLevel = 4;
-					break;
-				case "start-speed=5":
-					settings.startLevel = 5;
-					break;
-				case "start-speed=6":
-					settings.startLevel = 6;
-					break;
-				case "start-speed=7":
-					settings.startLevel = 7;
-					break;
-				case "start-speed=8":
-					settings.startLevel = 8;
-					break;
-				case "start-speed=9":
-					settings.startLevel = 9;
-					break;
-				case "start-speed=10":
-					settings.startLevel = 10;
-					break;
-				case "start-speed=11":
-					settings.startLevel = 11;
-					break;
-				case "start-speed=12":
-					settings.startLevel = 12;
-					break;
-				case "start-speed=13":
-					settings.startLevel = 13;
-					break;
-				case "start-speed=14":
-					settings.startLevel = 14;
-					break;
-				case "start-speed=15":
-					settings.startLevel = 15;
-					break;
-				case "start-speed=16":
-					settings.startLevel = 16;
-					break;
-				case "start-speed=17":
-					settings.startLevel = 17;
-					break;
-				case "start-speed=18":
-					settings.startLevel = 18;
-					break;
-				case "start-speed=19":
-					settings.startLevel = 19;
-					break;
-				case "start-speed=20":
-					settings.startLevel = 20;
-					break;
-				case "start-speed=21":
-					settings.startLevel = 21;
-					break;
-				case "start-speed=22":
-					settings.startLevel = 22;
-					break;
-				case "start-speed=23":
-					settings.startLevel = 23;
-					break;
-				case "start-speed=24":
-					settings.startLevel = 24;
-					break;
-				case "start-speed=25":
-					settings.startLevel = 25;
-					break;
-				case "start-speed=26":
-					settings.startLevel = 26;
-					break;
-				case "start-speed=27":
-					settings.startLevel = 27;
-					break;
-				case "start-speed=28":
-					settings.startLevel = 28;
-					break;
-				case "start-speed=29":
-					settings.startLevel = 29;
-					break;
-				case @"start-speed=[1-9]\d{2,}|29|[3-9][0-9]":
-					settings.startLevel = 29;
-					break;
-				default:
-					settings.startLevel = 0;
-					break;
-			}
-		}
 	}
 
 	public void SpawnPiece()
