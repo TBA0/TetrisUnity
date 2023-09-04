@@ -63,6 +63,7 @@ public class Piece : MonoBehaviour
 	private ButtonControl b_RotateCW;
 	private ButtonControl b_SoftDrop;
 	private ButtonControl b_Reset;
+	private Mouse s_Scroll;
 
 	private void Awake()
 	{

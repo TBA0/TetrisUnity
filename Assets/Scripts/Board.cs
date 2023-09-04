@@ -473,7 +473,7 @@ public class Board : MonoBehaviour
 		}
 		if (lineClearUpdateDelay)
 		{
-			await Task.Delay(500);
+			await Task.Delay(450);
 			lineClearUpdateDelay = false;
 		}
 
