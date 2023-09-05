@@ -10,6 +10,8 @@ using System.Collections;
 using UnityEngine.UIElements;
 using System;
 using System.Linq;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Board : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class Board : MonoBehaviour
 	public TilemapRenderer tilemapRenderer { get; set; }
 	public Piece activePiece { get; private set; }
 	public NextPiece nextPiece { get; private set; }
+	public SetStartSpeed setStartSpeed { get; private set; }
 	public Text[] text { get; set; }
 	public Text stats { get; set; }
 	public Text pausedText { get; set; }
@@ -87,6 +90,10 @@ public class Board : MonoBehaviour
 	public TileBase Lv9B;
 	public TileBase Lv9C;
 
+	public UnityEvent OnGameover;
+
+	public UnityEvent OnPause;
+
 	public RectInt Bounds
 	{
 		get
@@ -106,6 +113,10 @@ public class Board : MonoBehaviour
 		if (PlayerPrefs.HasKey("HighScore"))
 		{
 			highscore = PlayerPrefs.GetInt("HighScore", highscore);
+		}
+		if (File.Exists("settings.txt"))
+		{
+			settings.ReadSettingsFile("settings.txt");
 		}
 		level = settings.startLevel;
 		prevLevel = settings.startLevel;
@@ -164,6 +175,7 @@ public class Board : MonoBehaviour
 			}
 			PlayerPrefs.SetInt("HighScore", highscore);
 			PlayerPrefs.Save();
+			OnGameover.Invoke();
 
 			if (gameOver)
 			{
@@ -208,6 +220,10 @@ public class Board : MonoBehaviour
 		droughtCounter = 0;
 		maxDrought = 0;
 		stopwatch.Restart();
+		if (File.Exists("settings.txt"))
+		{
+			settings.ReadSettingsFile("settings.txt");
+		}
 		level = settings.startLevel;
 		ChangeColours();
 		leveledUpOnce = false;

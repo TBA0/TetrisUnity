@@ -17,7 +17,6 @@ public class Piece : MonoBehaviour
 	private float prevFallDelay;
 
 	private bool pushedDown = false;
-	private bool pushingDown = false;
 	public int pushdownPoints = 0;
 
 	public float time = 0f;
@@ -48,12 +47,16 @@ public class Piece : MonoBehaviour
 
 	public bool paused = false;
 
+	public bool unpaused = false;
+
 	public string trtColor = "red";
 	public string droughtColor = "white";
 
 	public bool resetButtonsNotPressed = true;
 
 	public bool reset = true;
+
+	public bool firstFall = true;
 
 	private Input m_PlayerInput;
 	private ButtonControl b_Start;
@@ -114,9 +117,10 @@ public class Piece : MonoBehaviour
 
 	private void Update()
 	{
-		if (!Application.isFocused && !paused)
+		if (!Application.isFocused && !paused && !board.gameOver)
 		{
 			m_PlayerInput.Disable();
+			board.OnPause.Invoke();
 			Pause();
 			return;
 		}
@@ -157,40 +161,20 @@ public class Piece : MonoBehaviour
 		//Pause
 		if (!paused && !board.gameOver)
 		{
-			if (b_Start.wasPressedThisFrame)
+			if (b_Start.wasPressedThisFrame && !firstFall && !unpaused)
 			{
+				unpaused = true;
+				board.OnPause.Invoke();
 				Pause();
 				return;
 			}
 		}
-		if (paused && !board.gameOver)
+		else
 		{
-			if (b_Reset.wasPressedThisFrame)
-			{
-				Reset();
-			}
-			if (b_Start.wasPressedThisFrame)
-			{
-				board.stopwatch.Start();
-				board.pausedText.text = "";
-				board.tilemapRenderer.sortingOrder = 2;
-				paused = false;
-			}
-			return;
-		}
-		if (board.gameOver)
-		{
-			if (b_Start.wasPressedThisFrame)
-			{
-				Reset();
-			}
 			return;
 		}
 
-		if (paused)
-		{
-			return;
-		}
+		unpaused = false;
 
 
 		//Tetris rate text colour
@@ -458,6 +442,8 @@ public class Piece : MonoBehaviour
 
 		board.Set(this);
 
+		firstFall = false;
+
 		if (lockTime >= lockDelay)
 		{
 			board.score += pushdownPoints;
@@ -470,11 +456,20 @@ public class Piece : MonoBehaviour
 
 	public void Pause()
 	{
-		board.stopwatch.Stop();
-		FindObjectOfType<AudioManager>().Play("Pause");
-		board.pausedText.text = "PAUSED";
-		board.tilemapRenderer.sortingOrder = -1;
-		paused = true;
+		if (!paused)
+		{
+			board.stopwatch.Stop();
+			FindObjectOfType<AudioManager>().Play("Pause");
+			board.tilemapRenderer.sortingOrder = -1;
+			paused = true;
+		}
+		else
+		{
+			board.stopwatch.Start();
+			board.pausedText.text = "";
+			board.tilemapRenderer.sortingOrder = 2;
+			paused = false;
+		}
 	}
 
 	public void Reset()
@@ -482,6 +477,7 @@ public class Piece : MonoBehaviour
 		fallTime = Time.time + 1.6f;
 		reset = true;
 		paused = false;
+		firstFall = true;
 		board.pausedText.text = "";
 		board.tilemapRenderer.sortingOrder = 2;
 		board.gameOver = false;

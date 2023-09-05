@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class SetStartSpeed : MonoBehaviour
 {
-	private static string[] Options = new string[1] { "start-speed" };
 	public Slider sliderUI;
 	public Image sliderHandleImage;
 	public TextMeshProUGUI startSpeedText;
@@ -29,7 +28,7 @@ public class SetStartSpeed : MonoBehaviour
 	{
 		if (File.Exists("settings.txt"))
 		{
-			ReadSettingsFile("settings.txt");
+			settings.ReadSettingsFile("settings.txt");
 		}
 		sliderUI.value = settings.startLevel;
 		UpdateStartSpeed();
@@ -81,23 +80,6 @@ public class SetStartSpeed : MonoBehaviour
 			default:
 				sliderHandleImage.sprite = Lv0;
 				break;
-		}
-	}
-
-	public void ReadSettingsFile(string dir)
-	{
-		StreamReader reader = new StreamReader(dir);
-		string line;
-		while ((line = reader.ReadLine()) != null)
-		{
-			settings.startLevel = 0;
-			if (line.Contains(Options[0] + "="))
-			{
-				if (int.TryParse(line.Split('=')[1], out int level))
-				{
-					settings.startLevel = level;
-				}
-			}
 		}
 	}
 }
