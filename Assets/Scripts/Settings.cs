@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "ScriptableObjects/Settings", order = 1)]
 public class Settings : ScriptableObject
@@ -7,6 +9,7 @@ public class Settings : ScriptableObject
 	private static string[] Options = new string[1] { "start-speed" };
 
 	public int startLevel = 0;
+	public float masterVolume = 1.0f;
 
 	public void ReadSettingsFile(string dir)
 	{
@@ -14,14 +17,29 @@ public class Settings : ScriptableObject
 		string line;
 		while ((line = reader.ReadLine()) != null)
 		{
-			startLevel = 0;
-			if (line.Contains(Options[0] + "="))
+			if (line.Contains('='))
 			{
-				if (int.TryParse(line.Split('=')[1], out int level))
+				switch (line.Split('=')[0])
 				{
-					startLevel = level;
+					case "master-volume":
+						if (float.TryParse(line.Split('=')[1], out float volume))
+						{
+							masterVolume = volume;
+						}
+						break;
+					case "start-speed":
+						if (int.TryParse(line.Split('=')[1], out int level))
+						{
+							startLevel = level;
+						}
+						break;
 				}
 			}
 		}
+	}
+	public void WriteSettingsFile(string dir)
+	{
+		string saveSettings = "start-speed=" + startLevel + "\nmaster-volume=" + masterVolume;
+		File.WriteAllText(dir, saveSettings);
 	}
 }

@@ -12,7 +12,6 @@ public class SetStartSpeed : MonoBehaviour
 	public TextMeshProUGUI startSpeedText;
 	public Settings settings;
 
-	[SerializeField]
 	public Sprite Lv0;
 	public Sprite Lv1;
 	public Sprite Lv2;
@@ -42,8 +41,7 @@ public class SetStartSpeed : MonoBehaviour
 		settings.startLevel = startSpeedInt;
 		if (File.Exists("settings.txt"))
 		{
-			string saveSettings = "start-speed=" + settings.startLevel;
-			File.WriteAllText("settings.txt", saveSettings);
+			settings.WriteSettingsFile("settings.txt");
 		}
 		switch (startSpeedInt % 10)
 		{

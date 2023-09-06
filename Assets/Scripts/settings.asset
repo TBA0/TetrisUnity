@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8dfcfcecc75b904d8f99b656296090f, type: 3}
   m_Name: settings
   m_EditorClassIdentifier: 
-  startLevel: 9
+  startLevel: 11
+  masterVolume: 1

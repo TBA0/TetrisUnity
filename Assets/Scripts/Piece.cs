@@ -13,6 +13,8 @@ public class Piece : MonoBehaviour
 	public Vector3Int position { get; private set; }
 	public int rotationIndex { get; private set; }
 
+	public float fps;
+
 	public float lockDelay = 0f;
 	private float prevFallDelay;
 
@@ -117,6 +119,15 @@ public class Piece : MonoBehaviour
 
 	private void Update()
 	{
+		//Get FPS
+		fps = 1.0f / Time.deltaTime;
+
+		//Current game playtime
+		string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", board.ts.Hours, board.ts.Minutes, board.ts.Seconds, board.ts.Milliseconds / 10);
+
+		//Stats text output
+		board.stats.text = "FPS: " + fps.ToString("0.0") + "\n\n\nNEXT:\n\n\n\n\n\n  HIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\n      SCORE: " + string.Format("{0:n0}", board.score) + "\n\n      LEVEL: " + board.level.ToString() + "\n      LINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\n    DROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\n       TIME: " + elapsedTime.ToString();
+		
 		if (!Application.isFocused && !paused && !board.gameOver)
 		{
 			m_PlayerInput.Disable();
@@ -278,12 +289,6 @@ public class Piece : MonoBehaviour
 				board.speed = Speed.Lv29;
 				break;
 		}
-
-		//Current game playtime
-		string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", board.ts.Hours, board.ts.Minutes, board.ts.Seconds, board.ts.Milliseconds / 10);
-
-		//Stats text output
-		board.stats.text = "NEXT:\n\n\n\n\n\n\n\nHIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\nSCORE: " + string.Format("{0:n0}", board.score) + "\n\nLEVEL: " + board.level.ToString() + "\nLINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\nDROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\nTIME: " + elapsedTime.ToString();
 
 		//Clear board (always put actions below this line of code)
 		if (!(board.lockWait || board.lineClearWait) && spawnedPiece)
@@ -466,7 +471,6 @@ public class Piece : MonoBehaviour
 		else
 		{
 			board.stopwatch.Start();
-			board.pausedText.text = "";
 			board.tilemapRenderer.sortingOrder = 2;
 			paused = false;
 		}
@@ -478,7 +482,6 @@ public class Piece : MonoBehaviour
 		reset = true;
 		paused = false;
 		firstFall = true;
-		board.pausedText.text = "";
 		board.tilemapRenderer.sortingOrder = 2;
 		board.gameOver = false;
 		board.ResetBoard();

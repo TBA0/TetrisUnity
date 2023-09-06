@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class Board : MonoBehaviour
 {
@@ -22,9 +23,8 @@ public class Board : MonoBehaviour
 	public Piece activePiece { get; private set; }
 	public NextPiece nextPiece { get; private set; }
 	public SetStartSpeed setStartSpeed { get; private set; }
-	public Text[] text { get; set; }
-	public Text stats { get; set; }
-	public Text pausedText { get; set; }
+	public TextMeshProUGUI[] text { get; set; }
+	public TextMeshProUGUI stats { get; set; }
 	public Settings settings;
 	public TetrominoData[] tetrominoes;
 	public int nextPieceInt = -1;
@@ -123,11 +123,10 @@ public class Board : MonoBehaviour
 		tilemap = GetComponentInChildren<Tilemap>();
 		activePiece = GetComponentInChildren<Piece>();
 		nextPiece = GetComponentInChildren<NextPiece>();
-		text = GetComponentsInChildren<Text>();
+		text = GetComponentsInChildren<TextMeshProUGUI>();
 		audioPlayer = FindObjectOfType<AudioManager>();
 		tilemapRenderer = FindObjectOfType<TilemapRenderer>();
 		stats = text[0];
-		pausedText = text[1];
 
 		for (int i = 0; i < tetrominoes.Length; i++)
 		{
