@@ -60,6 +60,10 @@ public class Piece : MonoBehaviour
 
 	public bool firstFall = true;
 
+	public float tapHz;
+	public float lastTapL;
+	public float lastTapR;
+
 	private Input m_PlayerInput;
 	private ButtonControl b_Start;
 	private ButtonControl b_MoveLeft;
@@ -68,7 +72,6 @@ public class Piece : MonoBehaviour
 	private ButtonControl b_RotateCW;
 	private ButtonControl b_SoftDrop;
 	private ButtonControl b_Reset;
-	private Mouse s_Scroll;
 
 	private void Awake()
 	{
@@ -127,7 +130,10 @@ public class Piece : MonoBehaviour
 
 		//Stats text output
 		board.stats.text = "FPS: " + fps.ToString("0.0") + "\n\n\nNEXT:\n\n\n\n\n\n  HIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\n      SCORE: " + string.Format("{0:n0}", board.score) + "\n\n      LEVEL: " + board.level.ToString() + "\n      LINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\n    DROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\n       TIME: " + elapsedTime.ToString();
-		
+
+		//Tap hz text output
+		board.tapHz.text = "TAP: " + tapHz.ToString("0.0") + "Hz";
+
 		if (!Application.isFocused && !paused && !board.gameOver)
 		{
 			m_PlayerInput.Disable();
@@ -304,6 +310,8 @@ public class Piece : MonoBehaviour
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyLeft = true;
+			tapHz = 1.0f / (Time.time - lastTapL);
+			lastTapL = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyLeft = false;
 		if (b_MoveLeft.wasReleasedThisFrame)
@@ -334,6 +342,8 @@ public class Piece : MonoBehaviour
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyRight = true;
+			tapHz = 1.0f / (Time.time - lastTapR);
+			lastTapR = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyRight = false;
 		if (b_MoveRight.wasReleasedThisFrame)

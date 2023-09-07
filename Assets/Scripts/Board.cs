@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Collections;
-using UnityEngine.UIElements;
 using System;
 using System.Linq;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using TMPro;
 
 public class Board : MonoBehaviour
@@ -24,7 +18,8 @@ public class Board : MonoBehaviour
 	public NextPiece nextPiece { get; private set; }
 	public SetStartSpeed setStartSpeed { get; private set; }
 	public TextMeshProUGUI[] text { get; set; }
-	public TextMeshProUGUI stats { get; set; }
+	public TextMeshProUGUI stats;
+	public TextMeshProUGUI tapHz;
 	public Settings settings;
 	public TetrominoData[] tetrominoes;
 	public int nextPieceInt = -1;
@@ -123,10 +118,8 @@ public class Board : MonoBehaviour
 		tilemap = GetComponentInChildren<Tilemap>();
 		activePiece = GetComponentInChildren<Piece>();
 		nextPiece = GetComponentInChildren<NextPiece>();
-		text = GetComponentsInChildren<TextMeshProUGUI>();
 		audioPlayer = FindObjectOfType<AudioManager>();
 		tilemapRenderer = FindObjectOfType<TilemapRenderer>();
-		stats = text[0];
 
 		for (int i = 0; i < tetrominoes.Length; i++)
 		{
