@@ -51,6 +51,7 @@ public class Piece : MonoBehaviour
 
 	public bool unpaused = false;
 
+	public string tapColor = "red";
 	public string trtColor = "red";
 	public string droughtColor = "white";
 
@@ -122,6 +123,36 @@ public class Piece : MonoBehaviour
 
 	private void Update()
 	{
+		//Get tap hz colour
+		if (tapHz < 2.5f)
+		{
+			tapColor = "red";
+		}
+		else if (tapHz >= 2.5f && tapHz < 5.0f)
+		{
+			tapColor = "orange";
+		}
+		else if (tapHz >= 5.0f && tapHz < 10.0f)
+		{
+			tapColor = "yellow";
+		}
+		else if (tapHz >= 10.0f && tapHz < 15.0f)
+		{
+			tapColor = "#00FF00FF";
+		}
+		else if (tapHz >= 15.0f && tapHz < 20.0f)
+		{
+			tapColor = "#00FFFFFF";
+		}
+		else if (tapHz >= 20.0f && tapHz < 30.0f)
+		{
+			tapColor = "#0000FFFF";
+		}
+		else if (tapHz >= 30.0f)
+		{
+			tapColor = "#FF00FFFF";
+		}
+
 		//Get FPS
 		fps = 1.0f / Time.deltaTime;
 
@@ -129,15 +160,14 @@ public class Piece : MonoBehaviour
 		string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", board.ts.Hours, board.ts.Minutes, board.ts.Seconds, board.ts.Milliseconds / 10);
 
 		//Stats text output
-		board.stats.text = "FPS: " + fps.ToString("0.0") + "\n\n\nNEXT:\n\n\n\n\n\n  HIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\n      SCORE: " + string.Format("{0:n0}", board.score) + "\n\n      LEVEL: " + board.level.ToString() + "\n      LINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\n    DROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\n       TIME: " + elapsedTime.ToString();
+		board.stats.text = "\n\n\nNEXT:\n\n\n\n\n\n  HIGHSCORE: " + string.Format("{0:n0}", board.highscore) + "\n      SCORE: " + string.Format("{0:n0}", board.score) + "\n\n      LEVEL: " + board.level.ToString() + "\n      LINES: " + board.lines.ToString() + "\n\nTETRIS RATE: " + "<color=" + trtColor + ">" + board.tetrisRate.ToString() + "%</color> <color=#00FF00FF>" + board.tetrises + "</color>\n\n    DROUGHT: <color=" + droughtColor + ">" + board.droughtCounter.ToString() + "</color>\nMAX DROUGHT: " + board.maxDrought.ToString() + "\n\n       TIME: " + elapsedTime.ToString();
 
-		//Tap hz text output
-		board.tapHz.text = "TAP: " + tapHz.ToString("0.0") + "Hz";
+		//Tap hz & fps text output
+		board.infoStats.text = "FPS: " + fps.ToString("0.0") + "\nTAP: <color=" + tapColor + ">" + tapHz.ToString("0.0") + "Hz</color>";
 
 		if (!Application.isFocused && !paused && !board.gameOver)
 		{
 			m_PlayerInput.Disable();
-			board.OnPause.Invoke();
 			Pause();
 			return;
 		}
@@ -175,13 +205,22 @@ public class Piece : MonoBehaviour
 			b_Reset = (ButtonControl)m_PlayerInput.Player.Reset.activeControl;
 		}
 
+		//Unpause
+		if (paused)
+		{
+			if (b_Start.wasPressedThisFrame)
+			{
+				Pause();
+				return;
+			}
+		}
+
 		//Pause
 		if (!paused && !board.gameOver)
 		{
 			if (b_Start.wasPressedThisFrame && !firstFall && !unpaused)
 			{
 				unpaused = true;
-				board.OnPause.Invoke();
 				Pause();
 				return;
 			}
@@ -473,6 +512,7 @@ public class Piece : MonoBehaviour
 	{
 		if (!paused)
 		{
+			board.OnPause.Invoke();
 			board.stopwatch.Stop();
 			FindObjectOfType<AudioManager>().Play("Pause");
 			board.tilemapRenderer.sortingOrder = -1;
@@ -480,6 +520,7 @@ public class Piece : MonoBehaviour
 		}
 		else
 		{
+			board.OnUnpause.Invoke();
 			board.stopwatch.Start();
 			board.tilemapRenderer.sortingOrder = 2;
 			paused = false;
@@ -488,6 +529,7 @@ public class Piece : MonoBehaviour
 
 	public void Reset()
 	{
+		board.OnReset.Invoke();
 		fallTime = Time.time + 1.6f;
 		reset = true;
 		paused = false;

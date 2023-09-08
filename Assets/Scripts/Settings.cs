@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "ScriptableObjects/Settings", order = 1)]
 public class Settings : ScriptableObject

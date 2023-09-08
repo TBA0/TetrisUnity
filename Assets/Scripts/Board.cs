@@ -19,7 +19,7 @@ public class Board : MonoBehaviour
 	public SetStartSpeed setStartSpeed { get; private set; }
 	public TextMeshProUGUI[] text { get; set; }
 	public TextMeshProUGUI stats;
-	public TextMeshProUGUI tapHz;
+	public TextMeshProUGUI infoStats;
 	public Settings settings;
 	public TetrominoData[] tetrominoes;
 	public int nextPieceInt = -1;
@@ -86,8 +86,9 @@ public class Board : MonoBehaviour
 	public TileBase Lv9C;
 
 	public UnityEvent OnGameover;
-
 	public UnityEvent OnPause;
+	public UnityEvent OnUnpause;
+	public UnityEvent OnReset;
 
 	public RectInt Bounds
 	{
