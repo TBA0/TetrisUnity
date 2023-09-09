@@ -343,7 +343,7 @@ public class Piece : MonoBehaviour
 
 		//Move
 		//left
-		if (b_MoveLeft.wasPressedThisFrame && !readyLeft && !pushedDown)
+		if ((b_MoveLeft.wasPressedThisFrame && !readyLeft && !pushedDown) || Mouse.current.scroll.ReadValue().y < 0)
 		{
 			Move(Vector2Int.left);
 			downTime = Time.time;
@@ -353,7 +353,7 @@ public class Piece : MonoBehaviour
 			lastTapL = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyLeft = false;
-		if (b_MoveLeft.wasReleasedThisFrame)
+		if (b_MoveLeft.wasReleasedThisFrame || Mouse.current.scroll.ReadValue().y != 0)
 		{
 			readyLeft = false;
 			holdingDas = false;
@@ -375,7 +375,7 @@ public class Piece : MonoBehaviour
 		}
 
 		//right
-		if (b_MoveRight.wasPressedThisFrame && !readyRight && !pushedDown)
+		if ((b_MoveRight.wasPressedThisFrame && !readyRight && !pushedDown) || Mouse.current.scroll.ReadValue().y > 0)
 		{
 			Move(Vector2Int.right);
 			downTime = Time.time;
@@ -385,7 +385,7 @@ public class Piece : MonoBehaviour
 			lastTapR = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyRight = false;
-		if (b_MoveRight.wasReleasedThisFrame)
+		if (b_MoveRight.wasReleasedThisFrame || Mouse.current.scroll.ReadValue().y != 0)
 		{
 			readyRight = false;
 			holdingDas = false;
@@ -407,7 +407,7 @@ public class Piece : MonoBehaviour
 		}
 
 		//Pushdown
-		if (b_SoftDrop.wasPressedThisFrame && !holdingDas)
+		if ((b_SoftDrop.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame) && !holdingDas)
 		{
 			pushedDown = true;
 			fallTime = Time.time;
@@ -421,7 +421,7 @@ public class Piece : MonoBehaviour
 				board.speed = Speed.Lv19to28;
 			}
 		}
-		if (b_SoftDrop.wasReleasedThisFrame)
+		if (b_SoftDrop.wasReleasedThisFrame || Mouse.current.middleButton.wasReleasedThisFrame)
 		{
 			board.speed = prevFallDelay;
 			pushedDown = false;
