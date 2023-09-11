@@ -897,7 +897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 4
-    m_SelectOnUp: {fileID: 2002203490}
+    m_SelectOnUp: {fileID: 1720063193}
     m_SelectOnDown: {fileID: 1782979389}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -3749,7 +3749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 4
-    m_SelectOnUp: {fileID: 677569278}
+    m_SelectOnUp: {fileID: 2002203490}
     m_SelectOnDown: {fileID: 341592968}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -5023,7 +5023,7 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_SelectOnUp: {fileID: 677569278}
-    m_SelectOnDown: {fileID: 341592968}
+    m_SelectOnDown: {fileID: 1720063193}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 3
