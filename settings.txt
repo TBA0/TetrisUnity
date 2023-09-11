@@ -1,2 +1,4 @@
 start-speed=9
 master-volume=1
+mouse-input=True
+invert-mouse=False
