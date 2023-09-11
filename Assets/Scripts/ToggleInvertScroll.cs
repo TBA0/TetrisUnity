@@ -20,9 +20,6 @@ public class ToggleInvertScroll : MonoBehaviour
 	public void Enable()
 	{
 		settings.invertScroll = toggleUI.isOn;
-		if (File.Exists("settings.txt"))
-		{
-			settings.WriteSettingsFile("settings.txt");
-		}
+		settings.WriteSettingsFile("settings.txt");
 	}
 }

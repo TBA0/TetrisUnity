@@ -36,10 +36,7 @@ public class SetStartSpeed : MonoBehaviour
 		int startSpeedInt = Mathf.RoundToInt(sliderUI.value);
 		startSpeedText.text = startSpeedInt.ToString();
 		settings.startLevel = startSpeedInt;
-		if (File.Exists("settings.txt"))
-		{
-			settings.WriteSettingsFile("settings.txt");
-		}
+		settings.WriteSettingsFile("settings.txt");
 		switch (startSpeedInt % 10)
 		{
 			case 0:

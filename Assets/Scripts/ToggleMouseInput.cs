@@ -20,9 +20,6 @@ public class ToggleMouseInput : MonoBehaviour
 	public void Enable()
 	{
 		settings.mouseInputEnabled = toggleUI.isOn;
-		if (File.Exists("settings.txt"))
-		{
-			settings.WriteSettingsFile("settings.txt");
-		}
+		settings.WriteSettingsFile("settings.txt");
 	}
 }
