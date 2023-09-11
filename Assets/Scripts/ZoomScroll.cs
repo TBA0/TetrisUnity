@@ -9,7 +9,7 @@ public class ZoomScroll : MonoBehaviour
     {
 		if (Mouse.current.scroll.ReadValue().y != 0)
 		{
-			Debug.Log("scrolled");
+			Debug.Log(Mouse.current.scroll.ReadValue().y);
 			canvas.sizeDelta += new Vector2(100, 100);
 		}
 	}

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +34,6 @@ public class SetStartSpeed : MonoBehaviour
 	public void UpdateStartSpeed()
     {
 		int startSpeedInt = Mathf.RoundToInt(sliderUI.value);
-		Debug.Log(startSpeedInt);
 		startSpeedText.text = startSpeedInt.ToString();
 		settings.startLevel = startSpeedInt;
 		if (File.Exists("settings.txt"))

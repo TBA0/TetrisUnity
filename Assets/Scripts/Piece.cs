@@ -4,9 +4,11 @@ using System.Threading;
 using System.Collections;
 using System.Runtime.Remoting.Contexts;
 using UnityEngine.InputSystem.Controls;
+using System;
 
 public class Piece : MonoBehaviour
 {
+	public Settings settings;
 	public Board board { get; private set; }
 	public TetrominoData data { get; private set; }
 	public Vector3Int[] cells { get; private set; }
@@ -342,18 +344,47 @@ public class Piece : MonoBehaviour
 		}
 
 		//Move
-		//left
-		if ((b_MoveLeft.wasPressedThisFrame && !readyLeft && !pushedDown) || Mouse.current.scroll.ReadValue().y < 0)
+		
+		//Mouse inputs
+		if (settings.mouseInputEnabled)
 		{
-			Move(Vector2Int.left);
+			//Scroll up
+			if (Mouse.current.scroll.ReadValue().y > 0)
+			{
+				if (settings.invertScroll)
+				{
+					MoveRight();
+				}
+				else
+				{
+					MoveLeft();
+				}
+			}
+
+			//Scroll down
+			if (Mouse.current.scroll.ReadValue().y < 0)
+			{
+				if (settings.invertScroll)
+				{
+					MoveLeft();
+				}
+				else
+				{
+					MoveRight();
+				}
+			}
+		}
+
+		//left
+		if (b_MoveLeft.wasPressedThisFrame && !readyLeft && !pushedDown)
+		{
+			MoveLeft();
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyLeft = true;
-			tapHz = 1.0f / (Time.time - lastTapL);
-			lastTapL = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyLeft = false;
-		if (b_MoveLeft.wasReleasedThisFrame || Mouse.current.scroll.ReadValue().y != 0)
+		if (b_MoveLeft.wasReleasedThisFrame || (Mouse.current.scroll.ReadValue().y != 0 && settings.mouseInputEnabled))
 		{
 			readyLeft = false;
 			holdingDas = false;
@@ -375,17 +406,15 @@ public class Piece : MonoBehaviour
 		}
 
 		//right
-		if ((b_MoveRight.wasPressedThisFrame && !readyRight && !pushedDown) || Mouse.current.scroll.ReadValue().y > 0)
+		if ((b_MoveRight.wasPressedThisFrame && !readyRight && !pushedDown))
 		{
-			Move(Vector2Int.right);
+			MoveRight();
 			downTime = Time.time;
 			pressTime = downTime + dasDelay;
 			readyRight = true;
-			tapHz = 1.0f / (Time.time - lastTapR);
-			lastTapR = Time.time;
 		}
 		if (b_SoftDrop.wasPressedThisFrame) readyRight = false;
-		if (b_MoveRight.wasReleasedThisFrame || Mouse.current.scroll.ReadValue().y != 0)
+		if (b_MoveRight.wasReleasedThisFrame || (Mouse.current.scroll.ReadValue().y != 0 && settings.mouseInputEnabled))
 		{
 			readyRight = false;
 			holdingDas = false;
@@ -407,7 +436,7 @@ public class Piece : MonoBehaviour
 		}
 
 		//Pushdown
-		if ((b_SoftDrop.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame) && !holdingDas)
+		if ((b_SoftDrop.wasPressedThisFrame || (Mouse.current.middleButton.wasPressedThisFrame && settings.mouseInputEnabled)) && !holdingDas)
 		{
 			pushedDown = true;
 			fallTime = Time.time;
@@ -421,14 +450,14 @@ public class Piece : MonoBehaviour
 				board.speed = Speed.Lv19to28;
 			}
 		}
-		if (b_SoftDrop.wasReleasedThisFrame || Mouse.current.middleButton.wasReleasedThisFrame)
+		if (b_SoftDrop.wasReleasedThisFrame || (Mouse.current.middleButton.wasReleasedThisFrame && settings.mouseInputEnabled))
 		{
 			board.speed = prevFallDelay;
 			pushedDown = false;
 		}
 
 		//Rotations
-		if (b_RotateCCW.wasPressedThisFrame)
+		if (b_RotateCCW.wasPressedThisFrame || (Mouse.current.leftButton.wasPressedThisFrame && settings.mouseInputEnabled))
 		{
 			if (data.tetromino == Tetromino.S || data.tetromino == Tetromino.Z || data.tetromino == Tetromino.I)
 			{
@@ -439,7 +468,7 @@ public class Piece : MonoBehaviour
 				Rotate(-1);
 			}
 		}
-		else if (b_RotateCW.wasPressedThisFrame)
+		else if (b_RotateCW.wasPressedThisFrame || (Mouse.current.rightButton.wasPressedThisFrame && settings.mouseInputEnabled))
 		{
 			Rotate(1);
 		}
@@ -486,6 +515,20 @@ public class Piece : MonoBehaviour
 		{
 			board.Set(this);
 		}
+	}
+
+	private void MoveLeft()
+	{
+		Move(Vector2Int.left);
+		tapHz = 1.0f / (Time.time - lastTapL);
+		lastTapL = Time.time;
+	}
+
+	private void MoveRight()
+	{
+		Move(Vector2Int.right);
+		tapHz = 1.0f / (Time.time - lastTapR);
+		lastTapR = Time.time;
 	}
 
 	private void Fall()
