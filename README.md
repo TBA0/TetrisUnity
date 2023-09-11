@@ -34,3 +34,12 @@ Note: You can use the mouse to select UI buttons too.
 - Cross = Rotate Clockwise / Select UI Button
 - Start / Options = Start Menu / Select UI Button
 - Select / Share = Start Menu
+### Mouse Controls [1]:
+- Scroll Up = Shift Piece Left [2]
+- Scroll Down = Shift Piece Right [2]
+- Middle Mouse Button = Soft Drop
+- Left Click = Rotate Counter-Clockwise
+- Right Click = Rotate Clockwise
+
+1. Must be enabled in Settings page.
+2. Scroll up/down can be inverted in Settings page to accomodate left hand mouse usage.
