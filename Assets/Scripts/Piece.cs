@@ -68,6 +68,8 @@ public class Piece : MonoBehaviour
 	public float lastTapL;
 	public float lastTapR;
 
+	private Coroutine co_HideCursor;
+
 	private Input m_PlayerInput;
 	private ButtonControl b_Start;
 	private ButtonControl b_MoveLeft;
@@ -126,6 +128,23 @@ public class Piece : MonoBehaviour
 
 	private void Update()
 	{
+		if (Mouse.current.delta.x.ReadValue() == 0 && (Mouse.current.delta.y.ReadValue() == 0))
+		{
+			if (co_HideCursor == null)
+			{
+				co_HideCursor = StartCoroutine(HideCursor());
+			}
+		}
+		else
+		{
+			if (co_HideCursor != null)
+			{
+				StopCoroutine(co_HideCursor);
+				co_HideCursor = null;
+				Cursor.visible = true;
+			}
+		}
+
 		//Get tap hz colour
 		if (tapHz < 2.5f)
 		{
@@ -764,5 +783,10 @@ public class Piece : MonoBehaviour
 		{
 			return min + (input - min) % (max - min);
 		}
+	}
+	private IEnumerator HideCursor()
+	{
+		yield return new WaitForSeconds(3);
+		Cursor.visible = false;
 	}
 }
