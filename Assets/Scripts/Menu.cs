@@ -15,7 +15,7 @@ public class Menu : MonoBehaviour
 
     private void Awake()
     {
-        m_PlayerInput = new Input();
+		m_PlayerInput = new Input();
         m_PlayerInput.Enable();
 
         b_Submit = (ButtonControl)m_PlayerInput.UI.Submit.controls[0];
