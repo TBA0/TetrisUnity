@@ -365,7 +365,7 @@ public class Board : MonoBehaviour
 		}
 		if (lockWait)
 		{
-			await Task.Delay(132);
+			await Task.Delay(250);
 			lockWait = false;
 		}
 		if (lineClearUpdateDelay)

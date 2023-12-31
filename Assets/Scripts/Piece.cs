@@ -695,13 +695,13 @@ public class Piece : MonoBehaviour
 		{
 			if (unrotate)
 			{
-				ApplyRotationMatrix(-direction);
+				ApplyRotationMatrix(direction);
 				unrotate = false;
 
-				if (!TestWallKicks(rotationIndex, -direction))
+				if (!TestWallKicks(rotationIndex, direction))
 				{
 					rotationIndex = originalRotation;
-					ApplyRotationMatrix(direction);
+					ApplyRotationMatrix(-direction);
 				}
 				else
 				{
@@ -710,13 +710,13 @@ public class Piece : MonoBehaviour
 			}
 			else
 			{
-				ApplyRotationMatrix(direction);
+				ApplyRotationMatrix(-direction);
 				unrotate = true;
 
-				if (!TestWallKicks(rotationIndex, direction))
+				if (!TestWallKicks(rotationIndex, -direction))
 				{
 					rotationIndex = originalRotation;
-					ApplyRotationMatrix(-direction);
+					ApplyRotationMatrix(direction);
 				}
 				else
 				{
